@@ -55,13 +55,16 @@ public class VpnProfileDataSource
 	public static final String KEY_FLAGS = "flags";
 	public static final String KEY_IKE_PROPOSAL = "ike_proposal";
 	public static final String KEY_ESP_PROPOSAL = "esp_proposal";
+	public static final String KEY_GLOBAL_USERNAME = "global_username";
+	public static final String KEY_GLOBAL_PASSWORD = "global_password";
 
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDatabase;
 	private final Context mContext;
 
-	private static final String DATABASE_NAME = "strongswan.db";
+	private static final String DATABASE_NAME = "perfectprivacy.db";
 	private static final String TABLE_VPNPROFILE = "vpnprofile";
+	private static final String TABLE_SETTINGS = "settings";
 
 	private static final int DATABASE_VERSION = 16;
 
@@ -91,6 +94,24 @@ public class VpnProfileDataSource
 							};
 
 	private static final String[] ALL_COLUMNS = getColumns(DATABASE_VERSION);
+
+	public static final String DATABASE_SETTINGS_CREATE =
+			"CREATE TABLE " + TABLE_SETTINGS + " (" +
+					KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+					KEY_GLOBAL_USERNAME + " TEXT," +
+					KEY_GLOBAL_PASSWORD + " TEXT" +
+					");";
+
+	public static final String DATABASE_SETTINGS_CREATE_RECORD =
+			"INSERT INTO "+ TABLE_SETTINGS + " " +
+					"("+KEY_GLOBAL_USERNAME+", "+KEY_GLOBAL_PASSWORD+")" +
+					"VALUES (null, null);";
+
+	private static final String[] ALL_SETTINGS_COLUMNS = new String[] {
+			KEY_ID,
+			KEY_GLOBAL_USERNAME,
+			KEY_GLOBAL_PASSWORD,
+	};
 
 	private static String getDatabaseCreate(int version)
 	{
@@ -140,22 +161,24 @@ public class VpnProfileDataSource
 		public void onCreate(SQLiteDatabase database)
 		{
 			database.execSQL(getDatabaseCreate(DATABASE_VERSION));
+			database.execSQL(DATABASE_SETTINGS_CREATE);
+			database.execSQL(DATABASE_SETTINGS_CREATE_RECORD);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
 			Log.w(TAG, "Upgrading database from version " + oldVersion +
-				  " to " + newVersion);
+					" to " + newVersion);
 			if (oldVersion < 2)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_USER_CERTIFICATE +
-						   " TEXT;");
+						" TEXT;");
 			}
 			if (oldVersion < 3)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_VPN_TYPE +
-						   " TEXT DEFAULT '';");
+						" TEXT DEFAULT '';");
 			}
 			if (oldVersion < 4)
 			{	/* remove NOT NULL constraint from username column */
@@ -164,57 +187,57 @@ public class VpnProfileDataSource
 			if (oldVersion < 5)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_MTU +
-						   " INTEGER;");
+						" INTEGER;");
 			}
 			if (oldVersion < 6)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_PORT +
-						   " INTEGER;");
+						" INTEGER;");
 			}
 			if (oldVersion < 7)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_SPLIT_TUNNELING +
-						   " INTEGER;");
+						" INTEGER;");
 			}
 			if (oldVersion < 8)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_LOCAL_ID +
-						   " TEXT;");
+						" TEXT;");
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_REMOTE_ID +
-						   " TEXT;");
+						" TEXT;");
 			}
 			if (oldVersion < 9)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_UUID +
-						   " TEXT;");
+						" TEXT;");
 				updateColumns(db, 9);
 			}
 			if (oldVersion < 10)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_EXCLUDED_SUBNETS +
-						   " TEXT;");
+						" TEXT;");
 			}
 			if (oldVersion < 11)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_INCLUDED_SUBNETS +
-						   " TEXT;");
+						" TEXT;");
 			}
 			if (oldVersion < 12)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_SELECTED_APPS +
-						   " INTEGER;");
+						" INTEGER;");
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_SELECTED_APPS_LIST +
-						   " TEXT;");
+						" TEXT;");
 			}
 			if (oldVersion < 13)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_NAT_KEEPALIVE +
-						   " INTEGER;");
+						" INTEGER;");
 			}
 			if (oldVersion < 14)
 			{
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_FLAGS +
-						   " INTEGER;");
+						" INTEGER;");
 			}
 			if (oldVersion < 15)
 			{
@@ -346,6 +369,15 @@ public class VpnProfileDataSource
 	}
 
 	/**
+	 * Delete all given VPN profiles from the database.
+	 * @return true if deleted, false otherwise
+	 */
+	public boolean deleteVpnProfiles()
+	{
+		return mDatabase.delete(TABLE_VPNPROFILE,null, null) > 0;
+	}
+
+	/**
 	 * Get a single VPN profile from the database.
 	 * @param id the ID of the VPN profile
 	 * @return the profile or null, if not found
@@ -354,7 +386,7 @@ public class VpnProfileDataSource
 	{
 		VpnProfile profile = null;
 		Cursor cursor = mDatabase.query(TABLE_VPNPROFILE, ALL_COLUMNS,
-										KEY_ID + "=" + id, null, null, null, null);
+				KEY_ID + "=" + id, null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			profile = VpnProfileFromCursor(cursor);
@@ -372,7 +404,7 @@ public class VpnProfileDataSource
 	{
 		VpnProfile profile = null;
 		Cursor cursor = mDatabase.query(TABLE_VPNPROFILE, ALL_COLUMNS,
-										KEY_UUID + "='" + uuid.toString() + "'", null, null, null, null);
+				KEY_UUID + "='" + uuid.toString() + "'", null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			profile = VpnProfileFromCursor(cursor);
@@ -495,5 +527,40 @@ public class VpnProfileDataSource
 			Type = type;
 			Since = since;
 		}
+	}
+
+	public String getSettingUsername() {
+		Cursor cursor = mDatabase.query(TABLE_SETTINGS, ALL_SETTINGS_COLUMNS, null, null, null, null, null);
+		cursor.moveToFirst();
+		String username = cursor.getString(cursor.getColumnIndex(KEY_GLOBAL_USERNAME));
+		return username;
+	}
+
+	public void setSettingUsername(String new_username) {
+		if(new_username.isEmpty()) { new_username = null; }
+		ContentValues values = new ContentValues();
+		values.put(KEY_GLOBAL_USERNAME, new_username);
+		mDatabase.update(TABLE_SETTINGS, values, null, null);
+	}
+
+	public String getSettingPassword() {
+		Cursor cursor = mDatabase.query(TABLE_SETTINGS, ALL_SETTINGS_COLUMNS, null, null, null, null, null);
+		cursor.moveToFirst();
+		String password = cursor.getString(cursor.getColumnIndex(KEY_GLOBAL_PASSWORD));
+		return password;
+	}
+
+	public void setSettingPassword(String new_password) {
+		if(new_password.isEmpty()) { new_password = null; }
+		ContentValues values = new ContentValues();
+		values.put(KEY_GLOBAL_PASSWORD, new_password);
+		mDatabase.update(TABLE_SETTINGS, values, null, null);
+	}
+
+	public void updateAllProfilesUsernamePassword(String new_username, String new_password) {
+		ContentValues values = new ContentValues();
+		values.put(KEY_USERNAME, new_username);
+		values.put(KEY_PASSWORD, new_password);
+		mDatabase.update(TABLE_VPNPROFILE, values, null, null);
 	}
 }

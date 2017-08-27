@@ -18,6 +18,10 @@
 package org.strongswan.android.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.app.Service;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -33,12 +37,41 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.strongswan.android.R;
 import org.strongswan.android.data.VpnProfile;
+import org.strongswan.android.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnType;
+import org.strongswan.android.data.VpnType.VpnTypeFeature;
+import org.strongswan.android.logic.CharonVpnService;
 import org.strongswan.android.logic.TrustedCertificateManager;
 import org.strongswan.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
+import org.strongswan.android.ui.adapter.VpnProfileAdapter;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLHandshakeException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,8 +79,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnVpnProfileSelectedListener
 {
-	public static final String CONTACT_EMAIL = "android@strongswan.org";
-	public static final String EXTRA_CRL_LIST = "org.strongswan.android.CRL_LIST";
+	public static final String CONTACT_EMAIL = "support@perfect-privacy.com";
+	public static final String EXTRA_CRL_LIST = "org.perfectprivacy.android.CRL_LIST";
 
 	/**
 	 * Use "bring your own device" (BYOD) features
@@ -69,6 +102,31 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 		/* load CA certificates in a background task */
 		new LoadCertificatesTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+		//Check if Serverlist-Refresh is neccesarry
+		if(getIntent() != null) {
+			Bundle extraIntentInfo = getIntent().getExtras();
+
+			//Check if Activity got Extras
+			if(extraIntentInfo == null) { new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ""); }
+			else {
+				//Check specific activity extras
+				if (extraIntentInfo.getInt("recreatedFromRefresh") != 1) {
+					new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+				} else {
+					updateProfileList();
+				}
+			}
+		}
+	}
+
+	public void updateProfileList() {
+		VpnProfileDataSource dataSource = new VpnProfileDataSource(this);
+		dataSource.open();
+
+		ListView profileList = (ListView)findViewById(R.id.profile_list);
+		profileList.setAdapter(new VpnProfileAdapter(getApplicationContext(), R.layout.profile_list_item, dataSource.getAllVpnProfiles()));
+		dataSource.close();
 	}
 
 	@Override
@@ -226,5 +284,252 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			builder.setMessage(getActivity().getResources().getQuantityString(R.plurals.clear_crl_cache_msg, list.size(), list.size(), size));
 			return builder.create();
 		}
+	}
+
+	/**
+	 * Class that displays a login dialog and initiates the selected VPN
+	 * profile if the user confirms the dialog.
+	 */
+	public static class LoginDialog extends AppCompatDialogFragment
+	{
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState)
+		{
+			final Bundle profileInfo = getArguments();
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.login_dialog, null);
+			EditText username = (EditText)view.findViewById(R.id.username);
+			username.setText(profileInfo.getString(VpnProfileDataSource.KEY_USERNAME));
+			final EditText password = (EditText)view.findViewById(R.id.password);
+
+			AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+			adb.setView(view);
+			adb.setTitle(getString(R.string.login_title));
+			adb.setPositiveButton(R.string.login_confirm, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton)
+				{
+					MainActivity activity = (MainActivity)getActivity();
+					profileInfo.putString(VpnProfileDataSource.KEY_PASSWORD, password.getText().toString().trim());
+					// FIXME
+                    Log.e("LoginDialog", "Not implemented! FIXME");
+					//activity.prepareVpnService(profileInfo);
+				}
+			});
+			adb.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dismiss();
+				}
+			});
+			return adb.create();
+		}
+	}
+
+	/**
+	 * Class representing an error message which is displayed if VpnService is
+	 * not supported on the current device.
+	 */
+	public static class VpnNotSupportedError extends AppCompatDialogFragment
+	{
+		static final String ERROR_MESSAGE_ID = "org.perfectprivacy.android.VpnNotSupportedError.MessageId";
+
+		public static void showWithMessage(AppCompatActivity activity, int messageId)
+		{
+			Bundle bundle = new Bundle();
+			bundle.putInt(ERROR_MESSAGE_ID, messageId);
+			VpnNotSupportedError dialog = new VpnNotSupportedError();
+			dialog.setArguments(bundle);
+			dialog.show(activity.getSupportFragmentManager(), DIALOG_TAG);
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState)
+		{
+			final Bundle arguments = getArguments();
+			final int messageId = arguments.getInt(ERROR_MESSAGE_ID);
+			return new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.vpn_not_supported_title)
+					.setMessage(messageId)
+					.setCancelable(false)
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int id)
+						{
+							dialog.dismiss();
+						}
+					}).create();
+		}
+	}
+
+	/**
+	 * Class that loads or reloads the cached CA certificates.
+	 */
+	private class ProfileLoadTask extends AsyncTask<String, String, Void> {
+		private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+		String result = "";
+
+		@Override
+		protected void onPreExecute() {
+			//setProgressBarIndeterminateVisibility(true);
+			//progressDialog.setMessage(getString(R.string.updating_serverlist));
+			progressDialog.setMessage("FIXME");
+			progressDialog.show();
+			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				public void onDismiss(DialogInterface arg0) {
+					ProfileLoadTask.this.cancel(true);
+				}
+			});
+		}
+
+		@Override
+		protected Void doInBackground(String... params) {
+
+			result = "";
+			try {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+					System.setProperty("http.keepAlive", "false");
+
+				}
+
+				URL url = new URL("https://www.perfect-privacy.com/api/traffic.json");
+				HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+				urlConnection.setUseCaches(false);
+				urlConnection.setRequestMethod("GET");
+				urlConnection.setDoOutput(false);
+				urlConnection.setDoInput(true);
+				urlConnection.setConnectTimeout(10000);
+				urlConnection.setReadTimeout(10000);
+				try {
+					//urlConnection.connect();
+					//Get JSON-Data
+					if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+						InputStream is = urlConnection.getInputStream();
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+						//Converts JSON-Response into usable data
+						String line;
+						while ((line = bufferedReader.readLine()) != null) {
+							result = result + line;
+						}
+
+						is.close();
+					}
+					urlConnection.disconnect();
+				} catch (SSLHandshakeException e) {
+					if (e != null) {
+						e.printStackTrace();
+					}
+				} catch (SocketTimeoutException e) {
+					if (e != null) {
+						Toast.makeText(MainActivity.this, "Connection timed out!", Toast.LENGTH_LONG).show();
+					}
+				} catch (Exception e) {
+					if (e != null) {
+						e.printStackTrace();
+					}
+				}
+
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				if (e != null) {
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				if (e != null) {
+					e.printStackTrace();
+				}
+			} catch (Exception e) {
+				if (e != null) {
+					e.printStackTrace();
+				}
+			}
+
+			return null;
+
+		}
+
+		@Override
+		protected void onPostExecute(Void v) {
+			//parse JSON data
+			try {
+				JSONObject jObject = new JSONObject(result);
+				Iterator<?> keys = jObject.keys();
+				Map<String, Integer> serverBwMaxMap = new HashMap<>();
+				Map<String, Integer> serverBwInMap = new HashMap<>();
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
+					Log.i("Json Key", "Server: " + key);
+
+					if (jObject.get(key) instanceof JSONObject) {
+						//Generate nice looking profile names
+						String server = key;
+						server = server.replaceAll("\\d+", "");
+						Integer bw_in = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_in").toString());
+						Integer bw_out = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_out").toString());
+						Integer bw_max = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_max").toString());
+						Integer val = serverBwMaxMap.get(server);
+						if (val == null) {
+							serverBwMaxMap.put(server, bw_max);
+						} else {
+							serverBwMaxMap.put(server, bw_max + val);
+						}
+						Integer val1 = serverBwInMap.get(server);
+						if (val1 == null) {
+							serverBwInMap.put(server, bw_in);
+						} else {
+							serverBwInMap.put(server, bw_in + val1);
+						}
+
+					}
+
+				}
+				if (serverBwMaxMap.entrySet().size() > 0) {
+					VpnProfileDataSource dataSource = new VpnProfileDataSource(MainActivity.this);
+
+					dataSource.open();
+					dataSource.deleteVpnProfiles();
+
+					String new_username = dataSource.getSettingUsername();
+					String new_password = dataSource.getSettingPassword();
+
+					for (Map.Entry<String, Integer> entry : serverBwMaxMap.entrySet()) {
+						Log.i("Json Key", entry.getKey() + " - " + serverBwInMap.get(entry.getKey()) + "/" + entry.getValue());
+						VpnProfile profile = new VpnProfile();
+						String[] serverNameSplit = entry.getKey().split("\\.");
+						String serverName = serverNameSplit[0];
+						serverName = serverName.substring(0, 1).toUpperCase() + serverName.substring(1);
+						//double serverLoad = Math.round(((double) serverBwInMap.get(entry.getKey()) / (double) entry.getValue())*100);
+						//profile.setName(serverName + " - Load: " + (int) serverLoad +"%");
+						profile.setName(serverName);
+						profile.setGateway(entry.getKey());
+						profile.setVpnType(VpnType.IKEV2_EAP);
+
+						//Set account-data from settings
+						profile.setUsername(new_username);
+						profile.setPassword(new_password);
+
+						dataSource.insertProfile(profile);
+
+					}
+				} else {
+					//Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+				}
+
+			} catch (JSONException e) {
+				//Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+				Log.e("JSONException", "Error: " + e.toString());
+			} // catch (JSONException e)
+
+			//refreshServerList(true);
+			this.progressDialog.dismiss();
+			updateProfileList();
+		}
+
 	}
 }

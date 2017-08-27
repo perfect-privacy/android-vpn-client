@@ -216,4 +216,11 @@
     <string name="tile_connect">VPN verbinden</string>
     <string name="tile_disconnect">VPN trennen</string>
 
+    <!-- Toast -->
+    <string name="password_required_first">Logindaten setzen und erneut probieren!</string>
+    <string name="disconnect_before_refreshing">Bitte trennen Sie die aktuelle Verbindung und versuchen Sie es erneut.</string>
+
+    <string name="register_now">Noch keinen Account? Hier registrieren!</string>
+    <string name="updating_serverlist">Aktualisiere Serverliste...</string>
+    <string name="error_refreshing_serverlist">Fehler beim Aktualisieren der Serverliste!</string>
 </resources>

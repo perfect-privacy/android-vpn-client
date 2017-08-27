@@ -376,8 +376,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		@Override
 		protected void onPreExecute() {
 			//setProgressBarIndeterminateVisibility(true);
-			//progressDialog.setMessage(getString(R.string.updating_serverlist));
-			progressDialog.setMessage("FIXME");
+			progressDialog.setMessage(getString(R.string.updating_serverlist));
 			progressDialog.show();
 			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 				public void onDismiss(DialogInterface arg0) {
@@ -393,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			try {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
 					System.setProperty("http.keepAlive", "false");
-
 				}
 
 				URL url = new URL("https://www.perfect-privacy.com/api/traffic.json");
@@ -518,15 +516,14 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 					}
 				} else {
-					//Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+					Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
 				}
 
 			} catch (JSONException e) {
-				//Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
 				Log.e("JSONException", "Error: " + e.toString());
-			} // catch (JSONException e)
+			}
 
-			//refreshServerList(true);
 			this.progressDialog.dismiss();
 			updateProfileList();
 		}

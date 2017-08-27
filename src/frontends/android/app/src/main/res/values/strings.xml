@@ -216,4 +216,11 @@
     <string name="tile_connect">Connect VPN</string>
     <string name="tile_disconnect">Disconnect VPN</string>
 
+    <!-- Toast -->
+    <string name="password_required_first">Enter account-data and retry!</string>
+    <string name="disconnect_before_refreshing">Please disconnect first, then try again.</string>
+
+    <string name="register_now">No account? Register today!</string>
+    <string name="updating_serverlist">Updating Serverlist...</string>
+    <string name="error_refreshing_serverlist">Error refreshing serverlist!</string>
 </resources>

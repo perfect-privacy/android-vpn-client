@@ -15,8 +15,8 @@
 <resources>
 
     <!-- Application -->
-    <string name="app_name">strongSwan VPN 客户端</string>
-    <string name="main_activity_name">strongSwan</string>
+    <string name="app_name">Perfect Privacy VPN 客户端</string>
+    <string name="main_activity_name">Perfect Privacy</string>
     <string name="show_log">浏览日志</string>
     <string name="search">搜索</string>
     <string name="vpn_not_supported_title">无法支持VPN</string>
@@ -25,7 +25,7 @@
     <string name="vpn_not_supported_no_permission">Unable to get permission to create VPN connections. Either because it was denied by the user, or because a different VPN app has the always-on feature enabled.</string>
     <string name="loading">载入中&#8230;</string>
     <string name="profile_not_found">未找到配置</string>
-    <string name="strongswan_shortcut">strongSwan快捷方式</string>
+    <string name="strongswan_shortcut">Perfect Privacy</string>
     <string name="permanent_notification_name">VPN connection state</string>
     <string name="permanent_notification_description">Provides information about the VPN connection state and serves as permanent notification to keep the VPN service running in the background.</string>
 
@@ -38,7 +38,7 @@
     <string name="log_title">日志</string>
     <string name="send_log">发送日志文件</string>
     <string name="empty_log">日志文件为空</string>
-    <string name="log_mail_subject">strongSwan %1$s 日志文件</string>
+    <string name="log_mail_subject">perfectPrivacyVPN %1$s 日志文件</string>
 
     <!-- VPN profile list -->
     <string name="no_profiles">无配置.</string>

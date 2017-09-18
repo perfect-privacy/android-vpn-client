@@ -111,7 +111,16 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		new LoadCertificatesTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		//Check if Serverlist-Refresh is neccesarry
-		if(getIntent() != null) {
+		updateProfileList();
+		VpnProfileDataSource dataSource = new VpnProfileDataSource(this);
+		dataSource.open();
+		int numVPNProfiles = dataSource.getAllVpnProfiles().size();
+		dataSource.close();
+		if(numVPNProfiles < 1) {
+			refreshServerList();
+		}
+
+		/*if(getIntent() != null) {
 			Bundle extraIntentInfo = getIntent().getExtras();
 
 			//Check if Activity got Extras
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 					updateProfileList();
 				}
 			}
-		}
+		}*/
 	}
 
 	public void updateProfileList() {
@@ -168,7 +177,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				return true;*/
 			//TODO: Add action listeners for other menu items here
 			case R.id.menu_refresh_serverlist:
-				Toast.makeText(this, "Not implemented yet :(", Toast.LENGTH_LONG).show();
+				refreshServerList();
+				//Toast.makeText(this, "Not implemented yet :(", Toast.LENGTH_LONG).show();
 				return true;
 			case R.id.menu_crl_cache:
 				clearCRLs();
@@ -192,20 +202,21 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	}
 
 	// FIXME
-	public void refreshServerList(boolean refreshAfterRecreate) {
+	public void refreshServerList() {
 		//Check if connection is currently active
-		if(mService.getState() == State.DISABLED) {
+		if(mService == null || mService.getState() == State.DISABLED) {
 			//System.gc();
 
 			//Generate new Intent in order to refresh the Serverlist
-			Intent currentIntent = getIntent();
+			/*Intent currentIntent = getIntent();
 
 			if(refreshAfterRecreate) { currentIntent.putExtra("recreatedFromRefresh", 1); }
 			else { currentIntent.putExtra("recreatedFromRefresh", 0); }
 
 			finish();
 			startActivity(getIntent());
-			overridePendingTransition(0, 0); //Skip animation
+			overridePendingTransition(0, 0); //Skip animation*/
+			new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 		} else {
 			//Print error-message to user
 			Toast.makeText(this, R.string.disconnect_before_refreshing, Toast.LENGTH_LONG).show();
@@ -338,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Get attributes
-			final Bundle instanceInfo = getArguments();
+			final Bundle profileInfo = getArguments();
 
 			// Get current login infos
 			VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
@@ -394,19 +405,22 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 								// Dialog stays open
 								return;
 							} else {
-								if (newuser.isEmpty()) {
-									newuser = null;
-								}
-								if (newpass.isEmpty()) {
-									newpass = null;
-								}
+								if (newuser.isEmpty()) { newuser = null; }
+								if (newpass.isEmpty()) { newpass = null; }
 								dataSource.setSettingUsername(newuser);
 								dataSource.setSettingPassword(newpass);
 								dataSource.updateAllProfilesUsernamePassword(newuser, newpass);
 								mainActivity.updateProfileList();
 
+								// Connect to desired profile if dialog was invoked during connection bootstrapping
+								if(profileInfo != null && profileInfo.getLong(VpnProfileDataSource.KEY_ID) != 0L) {
+									MainActivity activity = (MainActivity) getActivity();
+									activity.startVpnProfile(dataSource.getVpnProfile(profileInfo.getLong(VpnProfileDataSource.KEY_ID)), true);
+								}
+
 								dataSource.close();
 								ad.dismiss();
+
 								return;
 							}
 						}

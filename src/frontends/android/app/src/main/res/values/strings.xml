@@ -20,6 +20,7 @@
     <!-- Application -->
     <string name="app_name">Perfect Privacy VPN Client</string>
     <string name="main_activity_name">Perfect Privacy</string>
+    <string name="refresh_serverlist">Refresh Server List</string>
     <string name="show_log">View log</string>
     <string name="search">Search</string>
     <string name="vpn_not_supported_title">VPN not supported</string>
@@ -183,7 +184,7 @@
     <string name="remediation_instructions_title">Remediation instructions</string>
 
     <!-- Dialogs -->
-    <string name="login_title">Enter password to connect</string>
+    <string name="login_title">Set Login Credentials</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_confirm">Connect</string>
@@ -216,11 +217,17 @@
     <string name="tile_connect">Connect VPN</string>
     <string name="tile_disconnect">Disconnect VPN</string>
 
+    <!-- Menu -->
+    <string name="set_login_credentials">Set Login-Credentials</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="invalid_user_or_password">Invalid Username or Password</string>
+
     <!-- Toast -->
     <string name="password_required_first">Enter account-data and retry!</string>
     <string name="disconnect_before_refreshing">Please disconnect first, then try again.</string>
 
-    <string name="register_now">No account? Register today!</string>
+    <string name="register_now"><a href="https://perfect-privacy.com/">No account? Register today!</a></string>
     <string name="updating_serverlist">Updating Serverlist...</string>
     <string name="error_refreshing_serverlist">Error refreshing serverlist!</string>
 </resources>

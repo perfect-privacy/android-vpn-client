@@ -38,13 +38,13 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_marginLeft="15dp" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/profile_item_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?android:textColorSecondary"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp" />-->
 
     <TextView
         android:id="@+id/profile_item_certificate"

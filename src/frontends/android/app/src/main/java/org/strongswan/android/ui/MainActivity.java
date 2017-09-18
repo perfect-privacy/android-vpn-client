@@ -37,6 +37,8 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +47,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -97,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 		ActionBar bar = getSupportActionBar();
 		bar.setDisplayShowHomeEnabled(true);
-		bar.setDisplayShowTitleEnabled(false);
+		//bar.setTitle("  " + getString(R.string.app_name));
+		bar.setTitle("  " + getString(R.string.main_activity_name));
+		bar.setDisplayShowTitleEnabled(true);
 		bar.setIcon(R.drawable.ic_launcher);
 
 		/* load CA certificates in a background task */
@@ -155,9 +160,13 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				Intent intent = new Intent(this, VpnProfileImportActivity.class);
 				startActivity(intent);
 				return true;*/
-			case R.id.menu_manage_certs:
+			/*case R.id.menu_manage_certs:
 				Intent certIntent = new Intent(this, TrustedCertificatesActivity.class);
 				startActivity(certIntent);
+				return true;*/
+			//TODO: Add action listeners for other menu items here
+			case R.id.menu_refresh_serverlist:
+				Toast.makeText(this, "Not implemented yet :(", Toast.LENGTH_LONG).show();
 				return true;
 			case R.id.menu_crl_cache:
 				clearCRLs();
@@ -301,6 +310,9 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			EditText username = (EditText)view.findViewById(R.id.username);
 			username.setText(profileInfo.getString(VpnProfileDataSource.KEY_USERNAME));
 			final EditText password = (EditText)view.findViewById(R.id.password);
+
+			TextView registerLink = (TextView) view.findViewById(R.id.register_now_link);
+			registerLink.setMovementMethod(LinkMovementMethod.getInstance());
 
 			AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
 			adb.setView(view);

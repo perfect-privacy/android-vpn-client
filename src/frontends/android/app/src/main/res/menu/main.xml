@@ -17,8 +17,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_manage_certs"
-        android:title="@string/trusted_certs_title"
+        android:id="@+id/menu_refresh_serverlist"
+        android:title="@string/refresh_serverlist"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/menu_set_login_credentials"
+        android:title="@string/set_login_credentials"
         app:showAsAction="withText" />
 
     <item

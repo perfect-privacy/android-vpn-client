@@ -30,9 +30,9 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:hint="@string/login_username"
-            android:inputType="textNoSuggestions" />
+            android:inputType="textNoSuggestions"
+            android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -46,9 +46,9 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:inputType="textPassword|textNoSuggestions"
-            android:hint="@string/login_password" />
+            android:hint="@string/login_password"
+            android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
 

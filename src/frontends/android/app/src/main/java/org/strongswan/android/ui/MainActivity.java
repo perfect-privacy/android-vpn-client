@@ -45,6 +45,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,6 +71,7 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -170,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				return true;
 			case R.id.menu_crl_cache:
 				clearCRLs();
+                return true;
+			case R.id.menu_set_login_credentials:
+				LoginDialog login = new LoginDialog();
+				login.setMainActivity(this);
+				login.show(getSupportFragmentManager(), DIALOG_TAG);
 				return true;
 			case R.id.menu_show_log:
 				Intent logIntent = new Intent(this, LogActivity.class);
@@ -181,6 +188,27 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	// FIXME
+	public void refreshServerList(boolean refreshAfterRecreate) {
+		//Check if connection is currently active
+		if(mService.getState() == State.DISABLED) {
+			//System.gc();
+
+			//Generate new Intent in order to refresh the Serverlist
+			Intent currentIntent = getIntent();
+
+			if(refreshAfterRecreate) { currentIntent.putExtra("recreatedFromRefresh", 1); }
+			else { currentIntent.putExtra("recreatedFromRefresh", 0); }
+
+			finish();
+			startActivity(getIntent());
+			overridePendingTransition(0, 0); //Skip animation
+		} else {
+			//Print error-message to user
+			Toast.makeText(this, R.string.disconnect_before_refreshing, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -299,45 +327,94 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	 * Class that displays a login dialog and initiates the selected VPN
 	 * profile if the user confirms the dialog.
 	 */
-	public static class LoginDialog extends AppCompatDialogFragment
-	{
+	public static class LoginDialog extends AppCompatDialogFragment {
+
+		private MainActivity mainActivity;
+
+		public void setMainActivity(MainActivity mainActivity) {
+			this.mainActivity = mainActivity;
+		}
+
 		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState)
-		{
-			final Bundle profileInfo = getArguments();
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Get attributes
+			final Bundle instanceInfo = getArguments();
+
+			// Get current login infos
+			VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
+			dataSource.open();
+
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			View view = inflater.inflate(R.layout.login_dialog, null);
-			EditText username = (EditText)view.findViewById(R.id.username);
-			username.setText(profileInfo.getString(VpnProfileDataSource.KEY_USERNAME));
-			final EditText password = (EditText)view.findViewById(R.id.password);
+			final EditText username = (EditText) view.findViewById(R.id.username);
+			username.setText(dataSource.getSettingUsername());
+			final EditText password = (EditText) view.findViewById(R.id.password);
+			password.setText(dataSource.getSettingPassword());
 
+			dataSource.close();
+
+			// Make register link clickable
 			TextView registerLink = (TextView) view.findViewById(R.id.register_now_link);
 			registerLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+			// Build Dialog
 			AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
 			adb.setView(view);
 			adb.setTitle(getString(R.string.login_title));
-			adb.setPositiveButton(R.string.login_confirm, new DialogInterface.OnClickListener()
-			{
+			adb.setCancelable(false);
+			adb.setPositiveButton(R.string.profile_edit_save, null); // Is set later directly on button
+
+			adb.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int whichButton)
-				{
-					MainActivity activity = (MainActivity)getActivity();
-					profileInfo.putString(VpnProfileDataSource.KEY_PASSWORD, password.getText().toString().trim());
-					// FIXME
-                    Log.e("LoginDialog", "Not implemented! FIXME");
-					//activity.prepareVpnService(profileInfo);
-				}
-			});
-			adb.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dismiss();
 				}
 			});
-			return adb.create();
+
+			// Create AlertDialog and attach to button listener to allow custom dismissing of dialog
+			final AlertDialog ad = adb.create();
+			ad.setOnShowListener(new DialogInterface.OnShowListener() {
+				@Override
+				public void onShow(DialogInterface dialog) {
+					// Get positive button and attach onclick listener
+					Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+					button.setOnClickListener(new View.OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+							VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
+							dataSource.open();
+
+							String newpass = password.getText().toString();
+							String newuser = username.getText().toString();
+
+							// Check validity of new password and username
+							if (!newuser.isEmpty() && (newuser.length() < 1 || newpass.length() < 1)) {
+								Toast.makeText(getActivity().getBaseContext(), R.string.invalid_user_or_password, Toast.LENGTH_LONG).show();
+								// Dialog stays open
+								return;
+							} else {
+								if (newuser.isEmpty()) {
+									newuser = null;
+								}
+								if (newpass.isEmpty()) {
+									newpass = null;
+								}
+								dataSource.setSettingUsername(newuser);
+								dataSource.setSettingPassword(newpass);
+								dataSource.updateAllProfilesUsernamePassword(newuser, newpass);
+								mainActivity.updateProfileList();
+
+								dataSource.close();
+								ad.dismiss();
+								return;
+							}
+						}
+					});
+				}
+			});
+
+			return ad;
 		}
 	}
 

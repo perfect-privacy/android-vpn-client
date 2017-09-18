@@ -406,9 +406,9 @@ public class VpnProfileDetailActivity extends AppCompatActivity
 			case R.id.menu_cancel:
 				finish();
 				return true;
-			case R.id.menu_accept:
+			/*case R.id.menu_accept:
 				saveProfile();
-				return true;
+				return true;*/
 			default:
 				return super.onOptionsItemSelected(item);
 		}

@@ -257,11 +257,11 @@ public class VpnProfileImportActivity extends AppCompatActivity
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.profile_import, menu);
-		if (mHideImport)
+		/*if (mHideImport)
 		{
 			MenuItem item = menu.findItem(R.id.menu_accept);
 			item.setVisible(false);
-		}
+		}*/
 		return true;
 	}
 
@@ -273,9 +273,9 @@ public class VpnProfileImportActivity extends AppCompatActivity
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.menu_accept:
+			/*case R.id.menu_accept:
 				saveProfile();
-				return true;
+				return true;*/
 			default:
 				return super.onOptionsItemSelected(item);
 		}

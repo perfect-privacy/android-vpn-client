@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+		/*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
 		{
 			menu.removeItem(R.id.menu_import_profile);
-		}
+		}*/
 		return true;
 	}
 
@@ -151,10 +151,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	{
 		switch (item.getItemId())
 		{
-			case R.id.menu_import_profile:
+			/*case R.id.menu_import_profile:
 				Intent intent = new Intent(this, VpnProfileImportActivity.class);
 				startActivity(intent);
-				return true;
+				return true;*/
 			case R.id.menu_manage_certs:
 				Intent certIntent = new Intent(this, TrustedCertificatesActivity.class);
 				startActivity(certIntent);

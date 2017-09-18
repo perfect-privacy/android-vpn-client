@@ -207,11 +207,11 @@ public class VpnProfileListFragment extends Fragment
 	{
 		switch (item.getItemId())
 		{
-			case R.id.add_profile:
+			/*case R.id.add_profile:
 				Intent connectionIntent = new Intent(getActivity(),
 													 VpnProfileDetailActivity.class);
 				startActivityForResult(connectionIntent, ADD_REQUEST);
-				return true;
+				return true;*/
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -249,7 +249,8 @@ public class VpnProfileListFragment extends Fragment
 		{
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.profile_list_context, menu);
-			mEditProfile = menu.findItem(R.id.edit_profile);
+			//mEditProfile = menu.findItem(R.id.edit_profile);
+			mSelected = new HashSet<>();
 			mode.setTitle(R.string.select_profiles);
 			return true;
 		}
@@ -257,7 +258,7 @@ public class VpnProfileListFragment extends Fragment
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item)
 		{
-			switch (item.getItemId())
+			/*switch (item.getItemId())
 			{
 				case R.id.edit_profile:
 				{
@@ -293,7 +294,9 @@ public class VpnProfileListFragment extends Fragment
 					return false;
 			}
 			mode.finish();
-			return true;
+			return true;*/
+
+			return false;
 		}
 
 		@Override

@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		/* load CA certificates in a background task */
 		new LoadCertificatesTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-		//Check if Serverlist-Refresh is neccesarry
+		//Check if Serverlist-Refresh is neccesarry (0 profiles present)
 		updateProfileList();
 		VpnProfileDataSource dataSource = new VpnProfileDataSource(this);
 		dataSource.open();
@@ -119,21 +119,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		if(numVPNProfiles < 1) {
 			refreshServerList();
 		}
-
-		/*if(getIntent() != null) {
-			Bundle extraIntentInfo = getIntent().getExtras();
-
-			//Check if Activity got Extras
-			if(extraIntentInfo == null) { new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ""); }
-			else {
-				//Check specific activity extras
-				if (extraIntentInfo.getInt("recreatedFromRefresh") != 1) {
-					new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
-				} else {
-					updateProfileList();
-				}
-			}
-		}*/
 	}
 
 	public void updateProfileList() {
@@ -155,10 +140,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		/*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-		{
-			menu.removeItem(R.id.menu_import_profile);
-		}*/
 		return true;
 	}
 
@@ -167,18 +148,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	{
 		switch (item.getItemId())
 		{
-			/*case R.id.menu_import_profile:
-				Intent intent = new Intent(this, VpnProfileImportActivity.class);
-				startActivity(intent);
-				return true;*/
-			/*case R.id.menu_manage_certs:
-				Intent certIntent = new Intent(this, TrustedCertificatesActivity.class);
-				startActivity(certIntent);
-				return true;*/
-			//TODO: Add action listeners for other menu items here
 			case R.id.menu_refresh_serverlist:
 				refreshServerList();
-				//Toast.makeText(this, "Not implemented yet :(", Toast.LENGTH_LONG).show();
 				return true;
 			case R.id.menu_crl_cache:
 				clearCRLs();
@@ -205,17 +176,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	public void refreshServerList() {
 		//Check if connection is currently active
 		if(mService == null || mService.getState() == State.DISABLED) {
-			//System.gc();
-
-			//Generate new Intent in order to refresh the Serverlist
-			/*Intent currentIntent = getIntent();
-
-			if(refreshAfterRecreate) { currentIntent.putExtra("recreatedFromRefresh", 1); }
-			else { currentIntent.putExtra("recreatedFromRefresh", 0); }
-
-			finish();
-			startActivity(getIntent());
-			overridePendingTransition(0, 0); //Skip animation*/
 			new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 		} else {
 			//Print error-message to user
@@ -552,7 +512,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			}
 
 			return null;
-
 		}
 
 		@Override

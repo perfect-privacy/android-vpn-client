@@ -570,9 +570,49 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 						profile.setGateway(entry.getKey());
 						profile.setVpnType(VpnType.IKEV2_EAP);
 
-						//Set account-data from settings
+						// Set account-data from settings
 						profile.setUsername(new_username);
 						profile.setPassword(new_password);
+
+						// Detect country
+						switch (profile.getGateway()) {
+							case "amsterdam.perfect-privacy.com": profile.setCountry("nl"); break;
+							case "basel.perfect-privacy.com": profile.setCountry("ch"); break;
+							case "bucharest.perfect-privacy.com": profile.setCountry("ro"); break;
+							case "cairo.perfect-privacy.com": profile.setCountry("eg"); break;
+							case "calais.perfect-privacy.com": profile.setCountry("fr"); break;
+							case "chicago.perfect-privacy.com": profile.setCountry("us"); break;
+							case "copenhagen.perfect-privacy.com": break;
+							case "dallas.perfect-privacy.com": profile.setCountry("us"); break;
+							case "erfurt.perfect-privacy.com": profile.setCountry("de"); break;
+							case "frankfurt.perfect-privacy.com": profile.setCountry("de"); break;
+							case "hongkong.perfect-privacy.com": profile.setCountry("cn"); break;
+							case "istanbul.perfect-privacy.com": profile.setCountry("tc"); break;
+							case "london.perfect-privacy.com": profile.setCountry("uk"); break;
+							case "losangeles.perfect-privacy.com": profile.setCountry("us"); break;
+							case "malmoe.perfect-privacy.com": profile.setCountry("se"); break;
+							case "melbourne.perfect-privacy.com": profile.setCountry("au"); break;
+							case "miami.perfect-privacy.com": profile.setCountry("us"); break;
+							case "montreal.perfect-privacy.com": profile.setCountry("ca"); break;
+							case "moscow.perfect-privacy.com": profile.setCountry("ru"); break;
+							case "newyork.perfect-privacy.com": profile.setCountry("us"); break;
+							case "nottingham.perfect-privacy.com": profile.setCountry("uk"); break;
+							case "nuremberg.perfect-privacy.com": profile.setCountry("de"); break;
+							case "oslo.perfect-privacy.com": profile.setCountry("no"); break;
+							case "paris.perfect-privacy.com": profile.setCountry("fr"); break;
+							case "prague.perfect-privacy.com": profile.setCountry("cz"); break;
+							case "reykjavik.perfect-privacy.com": profile.setCountry("is"); break;
+							case "riga.perfect-privacy.com": profile.setCountry("lv"); break;
+							case "rotterdam.perfect-privacy.com": profile.setCountry("nl"); break;
+							case "singapore.perfect-privacy.com": profile.setCountry("sg"); break;
+							case "steinsel.perfect-privacy.com": profile.setCountry("lu"); break;
+							case "stockholm.perfect-privacy.com": profile.setCountry("se"); break;
+							case "strasbourg.perfect-privacy.com": profile.setCountry("fr"); break;
+							case "telaviv.perfect-privacy.com": profile.setCountry("il"); break;
+							case "tokyo.perfect-privacy.com": profile.setCountry("jp"); break;
+							case "vilnius.perfect-privacy.com": profile.setCountry("lt"); break;
+							case "zurich.perfect-privacy.com": profile.setCountry("ch"); break;
+						}
 
 						dataSource.insertProfile(profile);
 

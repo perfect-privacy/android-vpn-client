@@ -55,6 +55,7 @@ public class VpnProfileDataSource
 	public static final String KEY_FLAGS = "flags";
 	public static final String KEY_IKE_PROPOSAL = "ike_proposal";
 	public static final String KEY_ESP_PROPOSAL = "esp_proposal";
+	public static final String KEY_COUNTRY = "country";
 	public static final String KEY_GLOBAL_USERNAME = "global_username";
 	public static final String KEY_GLOBAL_PASSWORD = "global_password";
 
@@ -89,6 +90,7 @@ public class VpnProfileDataSource
 								new DbColumn(KEY_SELECTED_APPS_LIST, "TEXT", 12),
 								new DbColumn(KEY_NAT_KEEPALIVE, "INTEGER", 13),
 								new DbColumn(KEY_FLAGS, "INTEGER", 14),
+								new DbColumn(KEY_COUNTRY, "TEXT", 15),
 								new DbColumn(KEY_IKE_PROPOSAL, "TEXT", 15),
 								new DbColumn(KEY_ESP_PROPOSAL, "TEXT", 15),
 							};
@@ -241,6 +243,8 @@ public class VpnProfileDataSource
 			}
 			if (oldVersion < 15)
 			{
+				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_COUNTRY +
+						   " TEXT;");
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_IKE_PROPOSAL +
 						   " TEXT;");
 				db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_ESP_PROPOSAL +
@@ -480,6 +484,7 @@ public class VpnProfileDataSource
 		profile.setFlags(getInt(cursor, cursor.getColumnIndex(KEY_FLAGS)));
 		profile.setIkeProposal(cursor.getString(cursor.getColumnIndex(KEY_IKE_PROPOSAL)));
 		profile.setEspProposal(cursor.getString(cursor.getColumnIndex(KEY_ESP_PROPOSAL)));
+		profile.setCountry(cursor.getString(cursor.getColumnIndex(KEY_COUNTRY)));
 		return profile;
 	}
 
@@ -507,6 +512,7 @@ public class VpnProfileDataSource
 		values.put(KEY_FLAGS, profile.getFlags());
 		values.put(KEY_IKE_PROPOSAL, profile.getIkeProposal());
 		values.put(KEY_ESP_PROPOSAL, profile.getEspProposal());
+		values.put(KEY_COUNTRY, profile.getCountry());
 		return values;
 	}
 

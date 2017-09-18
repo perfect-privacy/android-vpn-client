@@ -26,10 +26,12 @@ import org.strongswan.android.data.VpnProfile;
 import org.strongswan.android.data.VpnType.VpnTypeFeature;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class VpnProfileAdapter extends ArrayAdapter<VpnProfile>
@@ -90,7 +92,22 @@ public class VpnProfileAdapter extends ArrayAdapter<VpnProfile>
 		{
 			tv.setVisibility(View.GONE);
 		}
-		return vpnProfileView;
+
+		// Set country flag
+		String countryFlag = profile.getCountry();
+		ImageView countryFlagImage = (ImageView) vpnProfileView.findViewById(R.id.profile_item_country_flag);
+		countryFlagImage.setImageResource(R.drawable.flag_unknown); // Default to unknown (Don't remove. Android will have errors rendering... *shrugs*)
+
+		// Check if other flag is present
+		if (countryFlag != null && !countryFlag.isEmpty()) {
+			// Check if flag exists
+			int countryFlagResourceId = this.getContext().getResources().getIdentifier("flag_" + countryFlag, "drawable", this.getContext().getPackageName());
+			if (countryFlagResourceId != 0) {
+				countryFlagImage.setImageResource(countryFlagResourceId);
+			}
+		}
+
+        return vpnProfileView;
 	}
 
 	@Override

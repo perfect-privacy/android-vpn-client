@@ -24,6 +24,9 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.Uri;
+import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -166,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			case R.id.menu_settings:
 				Intent settingsIntent = new Intent(this, SettingsActivity.class);
 				startActivity(settingsIntent);
+				return true;
+			case R.id.menu_get_help:
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.get_help_url)));
+				startActivity(browserIntent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

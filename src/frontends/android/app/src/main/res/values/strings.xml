@@ -222,6 +222,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="invalid_user_or_password">Invalid Username or Password</string>
+    <string name="get_help">Get Support</string>
+    <string name="get_help_url">https://www.perfect-privacy.com/contact-us/</string>
 
     <!-- Toast -->
     <string name="password_required_first">Enter account-data and retry!</string>

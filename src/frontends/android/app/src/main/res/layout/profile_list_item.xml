@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingLeft="2dip"
         android:scaleType="fitXY"
         android:src="@drawable/flag_unknown"
         android:visibility="visible" />
@@ -39,19 +40,19 @@
     android:background="?android:attr/activatedBackgroundIndicator" >
 
         <TextView
-        android:id="@+id/profile_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:id="@+id/profile_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/profile_item_gateway"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?android:textColorSecondary"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_marginLeft="15dp" />
+        <TextView
+            android:id="@+id/profile_item_gateway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:textColorSecondary" />
 
     <!--<TextView
         android:id="@+id/profile_item_username"
@@ -61,15 +62,15 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_marginLeft="15dp" />-->
 
-    <TextView
-        android:id="@+id/profile_item_certificate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?android:textColorSecondary"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:layout_marginLeft="15dp" />
+        <TextView
+            android:id="@+id/profile_item_certificate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:textColorSecondary" />
 
 </LinearLayout>
 

@@ -28,7 +28,6 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,17 +65,13 @@ import org.strongswan.android.logic.TrustedCertificateManager;
 import org.strongswan.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
 import org.strongswan.android.ui.adapter.VpnProfileAdapter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.IllegalFormatCodePointException;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
@@ -405,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	 */
 	public static class VpnNotSupportedError extends AppCompatDialogFragment
 	{
-		static final String ERROR_MESSAGE_ID = "org.perfectprivacy.android.VpnNotSupportedError.MessageId";
+		static final String ERROR_MESSAGE_ID = "org.strongswan.android.VpnNotSupportedError.MessageId";
 
 		public static void showWithMessage(AppCompatActivity activity, int messageId)
 		{
@@ -440,8 +435,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	 * Class that loads or reloads the cached CA certificates.
 	 */
 	private class ProfileLoadTask extends AsyncTask<String, String, Void> {
+
 		private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-		String result = "";
+
+		private String rawJSON = "";
 
 		@Override
 		protected void onPreExecute() {
@@ -458,13 +455,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		@Override
 		protected Void doInBackground(String... params) {
 
-			result = "";
-			try {
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-					System.setProperty("http.keepAlive", "false");
-				}
+			rawJSON = "";
 
-				URL url = new URL("https://www.perfect-privacy.com/api/traffic.json");
+			try {
+				URL url = new URL("https://www.perfect-privacy.com/api/serverlocations.json");
 				HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
 				urlConnection.setUseCaches(false);
 				urlConnection.setRequestMethod("GET");
@@ -472,50 +466,25 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				urlConnection.setDoInput(true);
 				urlConnection.setConnectTimeout(10000);
 				urlConnection.setReadTimeout(10000);
+
 				try {
-					//urlConnection.connect();
 					//Get JSON-Data
 					if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
 						InputStream is = urlConnection.getInputStream();
-						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-
-						//Converts JSON-Response into usable data
-						String line;
-						while ((line = bufferedReader.readLine()) != null) {
-							result = result + line;
-						}
-
+						rawJSON = new Scanner(is,"UTF-8").useDelimiter("\\A").next();
 						is.close();
 					}
 					urlConnection.disconnect();
 				} catch (SSLHandshakeException e) {
-					if (e != null) {
-						e.printStackTrace();
-					}
+					e.printStackTrace();
 				} catch (SocketTimeoutException e) {
-					if (e != null) {
-						Toast.makeText(MainActivity.this, "Connection timed out!", Toast.LENGTH_LONG).show();
-					}
+					Toast.makeText(MainActivity.this, "Connection timed out!", Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
-					if (e != null) {
-						e.printStackTrace();
-					}
+					e.printStackTrace();
 				}
 
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				if (e != null) {
-					e.printStackTrace();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				if (e != null) {
-					e.printStackTrace();
-				}
 			} catch (Exception e) {
-				if (e != null) {
-					e.printStackTrace();
-				}
+				e.printStackTrace();
 			}
 
 			return null;
@@ -523,118 +492,61 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 		@Override
 		protected void onPostExecute(Void v) {
-			//parse JSON data
+			// Parse JSON-API data
 			try {
-				JSONObject jObject = new JSONObject(result);
-				Iterator<?> keys = jObject.keys();
-				Map<String, Integer> serverBwMaxMap = new HashMap<>();
-				Map<String, Integer> serverBwInMap = new HashMap<>();
-				while (keys.hasNext()) {
-					String key = (String) keys.next();
-					Log.i("Json Key", "Server: " + key);
+				// Create JSON Object of stringified JSON-response
+				JSONObject jObject = new JSONObject(rawJSON);
+				Iterator<String> keys = jObject.keys();
+				Set<String> processedServers = new HashSet<>();
 
-					if (jObject.get(key) instanceof JSONObject) {
-						//Generate nice looking profile names
-						String server = key;
-						server = server.replaceAll("\\d+", "");
-						Integer bw_in = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_in").toString());
-						Integer bw_out = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_out").toString());
-						Integer bw_max = Integer.parseInt(((JSONObject) jObject.get(key)).get("bandwidth_max").toString());
-						Integer val = serverBwMaxMap.get(server);
-						if (val == null) {
-							serverBwMaxMap.put(server, bw_max);
-						} else {
-							serverBwMaxMap.put(server, bw_max + val);
-						}
-						Integer val1 = serverBwInMap.get(server);
-						if (val1 == null) {
-							serverBwInMap.put(server, bw_in);
-						} else {
-							serverBwInMap.put(server, bw_in + val1);
-						}
-
-					}
-
+				// Check if servers were found
+				if (!jObject.keys().hasNext()) {
+					Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+					Log.i("Serverlist refresh", "No servers found");
+					return;
 				}
-				if (serverBwMaxMap.entrySet().size() > 0) {
-					VpnProfileDataSource dataSource = new VpnProfileDataSource(MainActivity.this);
 
-					dataSource.open();
-					dataSource.deleteVpnProfiles();
+				// Parse each server and create profile
+				VpnProfileDataSource dataSource = new VpnProfileDataSource(MainActivity.this);
+				dataSource.open();
+				dataSource.deleteVpnProfiles();
 
-					String new_username = dataSource.getSettingUsername();
-					String new_password = dataSource.getSettingPassword();
+				String globalUsername = dataSource.getSettingUsername();
+				String globalPassword = dataSource.getSettingPassword();
 
-					for (Map.Entry<String, Integer> entry : serverBwMaxMap.entrySet()) {
-						Log.i("Json Key", entry.getKey() + " - " + serverBwInMap.get(entry.getKey()) + "/" + entry.getValue());
+				while (keys.hasNext()) {
+					String curKey = keys.next();
+					String curServerAddress = curKey.replaceAll("\\d", "");
+					//Log.i("Json Key", "Server: " + curServerAddress);
+
+					// Since we are ignoring numbers only process every server once
+					if (!processedServers.contains(curServerAddress)) {
+						// Create profile for current server and insert into database
+						JSONObject serverData = jObject.getJSONObject(curKey);
+						processedServers.add(curServerAddress);
+
 						VpnProfile profile = new VpnProfile();
-						String[] serverNameSplit = entry.getKey().split("\\.");
-						String serverName = serverNameSplit[0];
-						serverName = serverName.substring(0, 1).toUpperCase() + serverName.substring(1);
-						//double serverLoad = Math.round(((double) serverBwInMap.get(entry.getKey()) / (double) entry.getValue())*100);
-						//profile.setName(serverName + " - Load: " + (int) serverLoad +"%");
-						profile.setName(serverName);
-						profile.setGateway(entry.getKey());
+						profile.setName(serverData.getString("city"));
+						profile.setGateway(curServerAddress);
 						profile.setVpnType(VpnType.IKEV2_EAP);
-
-						// Set account-data from settings
-						profile.setUsername(new_username);
-						profile.setPassword(new_password);
-
-						// Detect country
-						switch (profile.getGateway()) {
-							case "amsterdam.perfect-privacy.com": profile.setCountry("nl"); break;
-							case "basel.perfect-privacy.com": profile.setCountry("ch"); break;
-							case "bucharest.perfect-privacy.com": profile.setCountry("ro"); break;
-							case "cairo.perfect-privacy.com": profile.setCountry("eg"); break;
-							case "calais.perfect-privacy.com": profile.setCountry("fr"); break;
-							case "chicago.perfect-privacy.com": profile.setCountry("us"); break;
-							case "copenhagen.perfect-privacy.com": break;
-							case "dallas.perfect-privacy.com": profile.setCountry("us"); break;
-							case "erfurt.perfect-privacy.com": profile.setCountry("de"); break;
-							case "frankfurt.perfect-privacy.com": profile.setCountry("de"); break;
-							case "hongkong.perfect-privacy.com": profile.setCountry("cn"); break;
-							case "istanbul.perfect-privacy.com": profile.setCountry("tc"); break;
-							case "london.perfect-privacy.com": profile.setCountry("uk"); break;
-							case "losangeles.perfect-privacy.com": profile.setCountry("us"); break;
-							case "malmoe.perfect-privacy.com": profile.setCountry("se"); break;
-							case "melbourne.perfect-privacy.com": profile.setCountry("au"); break;
-							case "miami.perfect-privacy.com": profile.setCountry("us"); break;
-							case "montreal.perfect-privacy.com": profile.setCountry("ca"); break;
-							case "moscow.perfect-privacy.com": profile.setCountry("ru"); break;
-							case "newyork.perfect-privacy.com": profile.setCountry("us"); break;
-							case "nottingham.perfect-privacy.com": profile.setCountry("uk"); break;
-							case "nuremberg.perfect-privacy.com": profile.setCountry("de"); break;
-							case "oslo.perfect-privacy.com": profile.setCountry("no"); break;
-							case "paris.perfect-privacy.com": profile.setCountry("fr"); break;
-							case "prague.perfect-privacy.com": profile.setCountry("cz"); break;
-							case "reykjavik.perfect-privacy.com": profile.setCountry("is"); break;
-							case "riga.perfect-privacy.com": profile.setCountry("lv"); break;
-							case "rotterdam.perfect-privacy.com": profile.setCountry("nl"); break;
-							case "singapore.perfect-privacy.com": profile.setCountry("sg"); break;
-							case "steinsel.perfect-privacy.com": profile.setCountry("lu"); break;
-							case "stockholm.perfect-privacy.com": profile.setCountry("se"); break;
-							case "strasbourg.perfect-privacy.com": profile.setCountry("fr"); break;
-							case "telaviv.perfect-privacy.com": profile.setCountry("il"); break;
-							case "tokyo.perfect-privacy.com": profile.setCountry("jp"); break;
-							case "vilnius.perfect-privacy.com": profile.setCountry("lt"); break;
-							case "zurich.perfect-privacy.com": profile.setCountry("ch"); break;
-						}
+						profile.setUsername(globalUsername);
+						profile.setPassword(globalPassword);
+						profile.setCountry(serverData.getString("country_short"));
 
 						dataSource.insertProfile(profile);
-
 					}
-				} else {
-					Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+
 				}
+
+				dataSource.close();
+				updateProfileList();
 
 			} catch (JSONException e) {
 				Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
 				Log.e("JSONException", "Error: " + e.toString());
+			} finally {
+				this.progressDialog.dismiss();
 			}
-
-			this.progressDialog.dismiss();
-			updateProfileList();
 		}
 
 	}

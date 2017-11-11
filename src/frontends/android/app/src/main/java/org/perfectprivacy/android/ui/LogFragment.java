@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,8 +27,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.logic.CharonVpnService;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.logic.CharonVpnService;
 
 import java.io.BufferedReader;
 import java.io.File;

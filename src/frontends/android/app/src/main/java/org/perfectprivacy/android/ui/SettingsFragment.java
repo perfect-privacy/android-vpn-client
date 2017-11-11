@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -23,17 +23,17 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.strongswan.android.utils.Constants.PREF_DEFAULT_VPN_PROFILE;
-import static org.strongswan.android.utils.Constants.PREF_DEFAULT_VPN_PROFILE_MRU;
+import static org.perfectprivacy.android.utils.Constants.PREF_DEFAULT_VPN_PROFILE;
+import static org.perfectprivacy.android.utils.Constants.PREF_DEFAULT_VPN_PROFILE_MRU;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener
 {

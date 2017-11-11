@@ -13,19 +13,13 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.adapter;
+package org.perfectprivacy.android.ui.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.security.TrustedCertificateEntry;
-
-import java.util.List;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.security.TrustedCertificateEntry;
 
 public class CertificateIdentitiesAdapter extends ArrayAdapter<String>
 {

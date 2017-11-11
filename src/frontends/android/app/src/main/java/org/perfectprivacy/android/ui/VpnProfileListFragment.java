@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,15 +37,13 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.ui.adapter.VpnProfileAdapter;
-import org.strongswan.android.utils.Constants;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
+import org.perfectprivacy.android.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;

@@ -13,24 +13,24 @@
  * for more details.
  */
 
-package org.strongswan.android.utils;
+package org.perfectprivacy.android.utils;
 
 public final class Constants
 {
 	/**
 	 * Intent action used to notify about changes to the VPN profiles
 	 */
-	public static final String VPN_PROFILES_CHANGED = "org.strongswan.android.VPN_PROFILES_CHANGED";
+	public static final String VPN_PROFILES_CHANGED = "com.perfectprivacy.android.VPN_PROFILES_CHANGED";
 
 	/**
 	 * Used in the intent above to notify about edits or inserts of a VPN profile (long)
 	 */
-	public static final String VPN_PROFILES_SINGLE = "org.strongswan.android.VPN_PROFILES_SINGLE";
+	public static final String VPN_PROFILES_SINGLE = "com.perfectprivacy.android.VPN_PROFILES_SINGLE";
 
 	/**
 	 * Used in the intent above to notify about the deletion of multiple VPN profiles (array of longs)
 	 */
-	public static final String VPN_PROFILES_MULTIPLE = "org.strongswan.android.VPN_PROFILES_MULTIPLE";
+	public static final String VPN_PROFILES_MULTIPLE = "com.perfectprivacy.android.VPN_PROFILES_MULTIPLE";
 
 	/**
 	 * Limits for MTU

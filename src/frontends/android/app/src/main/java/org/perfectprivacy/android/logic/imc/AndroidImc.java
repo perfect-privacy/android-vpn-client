@@ -13,17 +13,17 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc;
+package org.perfectprivacy.android.logic.imc;
 
-import org.strongswan.android.logic.imc.attributes.Attribute;
-import org.strongswan.android.logic.imc.attributes.AttributeType;
-import org.strongswan.android.logic.imc.collectors.Collector;
-import org.strongswan.android.logic.imc.collectors.DeviceIdCollector;
-import org.strongswan.android.logic.imc.collectors.InstalledPackagesCollector;
-import org.strongswan.android.logic.imc.collectors.PortFilterCollector;
-import org.strongswan.android.logic.imc.collectors.ProductInformationCollector;
-import org.strongswan.android.logic.imc.collectors.SettingsCollector;
-import org.strongswan.android.logic.imc.collectors.StringVersionCollector;
+import org.perfectprivacy.android.logic.imc.attributes.Attribute;
+import org.perfectprivacy.android.logic.imc.attributes.AttributeType;
+import org.perfectprivacy.android.logic.imc.collectors.Collector;
+import org.perfectprivacy.android.logic.imc.collectors.DeviceIdCollector;
+import org.perfectprivacy.android.logic.imc.collectors.InstalledPackagesCollector;
+import org.perfectprivacy.android.logic.imc.collectors.PortFilterCollector;
+import org.perfectprivacy.android.logic.imc.collectors.ProductInformationCollector;
+import org.perfectprivacy.android.logic.imc.collectors.SettingsCollector;
+import org.perfectprivacy.android.logic.imc.collectors.StringVersionCollector;
 
 import android.content.Context;
 

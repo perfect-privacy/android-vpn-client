@@ -15,9 +15,9 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.attributes;
+package org.perfectprivacy.android.logic.imc.attributes;
 
-import org.strongswan.android.utils.BufferedByteWriter;
+import org.perfectprivacy.android.utils.BufferedByteWriter;
 
 /**
  * PA-TNC String Version attribute (see section 4.2.4 of RFC 5792)

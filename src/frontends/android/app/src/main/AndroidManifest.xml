@@ -16,7 +16,7 @@
     for more details.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.strongswan.android">
+    package="org.perfectprivacy.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,7 +29,7 @@
         android:theme="@style/ApplicationTheme"
         android:allowBackup="false" >
         <activity
-            android:name=".ui.MainActivity"
+            android:name="org.perfectprivacy.android.ui.MainActivity"
             android:label="@string/main_activity_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -47,7 +47,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask" >
             <intent-filter>
-                <action android:name="org.strongswan.android.action.START_PROFILE" />
+                <action android:name="org.perfectprivacy.android.action.START_PROFILE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -56,18 +56,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.VpnProfileDetailActivity" >
+            android:name="org.perfectprivacy.android.ui.VpnProfileDetailActivity" >
         </activity>
         <activity
-            android:name=".ui.TrustedCertificatesActivity"
+            android:name="org.perfectprivacy.android.ui.TrustedCertificatesActivity"
             android:label="@string/trusted_certs_title" >
         </activity>
         <activity
-            android:name=".ui.SelectedApplicationsActivity"
+            android:name="org.perfectprivacy.android.ui.SelectedApplicationsActivity"
             android:label="@string/profile_select_apps" >
         </activity>
         <activity
-            android:name=".ui.LogActivity"
+            android:name="org.perfectprivacy.android.ui.LogActivity"
             android:label="@string/log_title" >
         </activity>
 		<activity
@@ -75,7 +75,7 @@
             android:label="@string/pref_title">
         </activity>
         <activity
-            android:name=".ui.RemediationInstructionsActivity"
+            android:name="org.perfectprivacy.android.ui.RemediationInstructionsActivity"
             android:label="@string/remediation_instructions_title" >
         </activity>
         <activity
@@ -88,7 +88,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.VpnProfileImportActivity"
+            android:name="org.perfectprivacy.android.ui.VpnProfileImportActivity"
             android:label="@string/profile_import"
             android:taskAffinity=""
             android:excludeFromRecents="true" >
@@ -135,7 +135,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.TrustedCertificateImportActivity"
+            android:name="org.perfectprivacy.android.ui.TrustedCertificateImportActivity"
             android:label="@string/import_certificate"
             android:theme="@style/TransparentActivity" >
             <intent-filter>
@@ -149,11 +149,11 @@
         </activity>
 
         <service
-            android:name=".logic.VpnStateService"
+            android:name="org.perfectprivacy.android.logic.VpnStateService"
             android:exported="false" >
         </service>
         <service
-            android:name=".logic.CharonVpnService"
+            android:name="org.perfectprivacy.android.logic.CharonVpnService"
             android:exported="false"
             android:permission="android.permission.BIND_VPN_SERVICE" >
             <intent-filter>
@@ -171,8 +171,8 @@
         </service>
 
         <provider
-            android:name=".data.LogContentProvider"
-            android:authorities="org.strongswan.android.content.log"
+            android:name="org.perfectprivacy.android.data.LogContentProvider"
+            android:authorities="org.perfectprivacy.android.content.log"
             android:exported="true" >
             <!-- android:grantUriPermissions="true" combined with a custom permission does
                  not work (probably too many indirections with ACTION_SEND) so we secure

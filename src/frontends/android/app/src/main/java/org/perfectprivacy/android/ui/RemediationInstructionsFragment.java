@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,9 +21,9 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.logic.imc.RemediationInstruction;
-import org.strongswan.android.ui.adapter.RemediationInstructionAdapter;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.logic.imc.RemediationInstruction;
+import org.perfectprivacy.android.ui.adapter.RemediationInstructionAdapter;
 
 import java.util.ArrayList;
 

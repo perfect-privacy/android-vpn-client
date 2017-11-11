@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc;
+package org.perfectprivacy.android.logic.imc;
 
 public enum ImcState
 {

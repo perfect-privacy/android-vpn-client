@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic;
+package org.perfectprivacy.android.logic;
 
 import android.app.Service;
 import android.content.Context;
@@ -26,13 +26,13 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType;
-import org.strongswan.android.logic.imc.ImcState;
-import org.strongswan.android.logic.imc.RemediationInstruction;
-import org.strongswan.android.ui.VpnProfileControlActivity;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType;
+import org.perfectprivacy.android.logic.imc.ImcState;
+import org.perfectprivacy.android.logic.imc.RemediationInstruction;
+import org.perfectprivacy.android.ui.VpnProfileControlActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;

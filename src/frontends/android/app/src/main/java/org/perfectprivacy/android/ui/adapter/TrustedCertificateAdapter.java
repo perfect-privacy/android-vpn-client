@@ -13,12 +13,12 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.adapter;
+package org.perfectprivacy.android.ui.adapter;
 
 import java.util.List;
 
-import org.strongswan.android.R;
-import org.strongswan.android.security.TrustedCertificateEntry;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.security.TrustedCertificateEntry;
 
 import android.content.Context;
 import android.view.LayoutInflater;

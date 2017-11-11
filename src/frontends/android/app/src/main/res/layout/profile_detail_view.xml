@@ -27,7 +27,7 @@
         android:padding="10dp"
         android:animateLayoutChanges="true" >
 
-        <org.strongswan.android.ui.widget.TextInputLayoutHelper
+        <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
             android:id="@+id/gateway_wrap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 android:singleLine="true"
                 android:inputType="textNoSuggestions" />
 
-        </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+        </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
         <TextView
             android:layout_width="match_parent"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/username_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,9 +82,9 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/password_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:singleLine="true"
                     android:inputType="textPassword|textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
         </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:id="@+id/select_certificate"
             layout="@layout/two_line_button" />
 
-        <org.strongswan.android.ui.widget.TextInputLayoutHelper
+        <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
             android:id="@+id/name_wrap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:inputType="textNoSuggestions"
                 android:completionThreshold="1" />
 
-        </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+        </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
         <CheckBox
             android:id="@+id/show_advanced"
@@ -194,7 +194,7 @@
                 android:textSize="20sp"
                 android:text="@string/profile_advanced_label" />
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/remote_id_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,9 +210,9 @@
                     android:inputType="textNoSuggestions"
                     android:completionThreshold="1" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/mtu_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,9 +226,9 @@
                     android:singleLine="true"
                     android:inputType="number|textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/port_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -242,9 +242,9 @@
                     android:singleLine="true"
                     android:inputType="number|textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/nat_keepalive_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
                     android:singleLine="true"
                     android:inputType="number|textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
             <Switch
                 android:id="@+id/cert_req"
@@ -364,7 +364,7 @@
                 android:textSize="12sp"
                 android:text="@string/profile_split_tunneling_intro" />
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/included_subnets_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -378,9 +378,9 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/excluded_subnets_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -394,7 +394,7 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
             <CheckBox
                 android:id="@+id/split_tunneling_v4"

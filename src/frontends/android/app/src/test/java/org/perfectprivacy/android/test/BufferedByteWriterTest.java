@@ -13,10 +13,10 @@
  * for more details.
  */
 
-package org.strongswan.android.test;
+package org.perfectprivacy.android.test;
 
 import org.junit.Test;
-import org.strongswan.android.utils.BufferedByteWriter;
+import org.perfectprivacy.android.utils.BufferedByteWriter;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

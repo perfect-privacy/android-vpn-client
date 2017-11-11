@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.data;
+package org.perfectprivacy.android.data;
 
 import java.util.EnumSet;
 

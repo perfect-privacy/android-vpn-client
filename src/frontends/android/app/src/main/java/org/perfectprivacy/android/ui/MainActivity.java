@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -55,15 +55,16 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
-import org.strongswan.android.logic.CharonVpnService;
-import org.strongswan.android.logic.TrustedCertificateManager;
-import org.strongswan.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
-import org.strongswan.android.ui.adapter.VpnProfileAdapter;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType;
+import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
+import org.perfectprivacy.android.logic.CharonVpnService;
+import org.perfectprivacy.android.logic.TrustedCertificateManager;
+import org.perfectprivacy.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
+import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
+import org.perfectprivacy.android.logic.VpnStateService.State;
 
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
@@ -400,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	 */
 	public static class VpnNotSupportedError extends AppCompatDialogFragment
 	{
-		static final String ERROR_MESSAGE_ID = "org.strongswan.android.VpnNotSupportedError.MessageId";
+		static final String ERROR_MESSAGE_ID = "com.perfectprivacy.android.VpnNotSupportedError.MessageId";
 
 		public static void showWithMessage(AppCompatActivity activity, int messageId)
 		{

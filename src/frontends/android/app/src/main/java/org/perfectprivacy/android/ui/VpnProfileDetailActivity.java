@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -58,19 +58,19 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfile.SelectedAppsHandling;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
-import org.strongswan.android.logic.TrustedCertificateManager;
-import org.strongswan.android.security.TrustedCertificateEntry;
-import org.strongswan.android.ui.adapter.CertificateIdentitiesAdapter;
-import org.strongswan.android.ui.widget.TextInputLayoutHelper;
-import org.strongswan.android.utils.Constants;
-import org.strongswan.android.utils.IPRangeSet;
-import org.strongswan.android.utils.Utils;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfile.SelectedAppsHandling;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType;
+import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
+import org.perfectprivacy.android.logic.TrustedCertificateManager;
+import org.perfectprivacy.android.security.TrustedCertificateEntry;
+import org.perfectprivacy.android.ui.adapter.CertificateIdentitiesAdapter;
+import org.perfectprivacy.android.ui.widget.TextInputLayoutHelper;
+import org.perfectprivacy.android.utils.Constants;
+import org.perfectprivacy.android.utils.IPRangeSet;
+import org.perfectprivacy.android.utils.Utils;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;

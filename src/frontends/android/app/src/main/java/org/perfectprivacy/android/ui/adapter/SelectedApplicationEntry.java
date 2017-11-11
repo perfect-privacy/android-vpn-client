@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.adapter;
+package org.perfectprivacy.android.ui.adapter;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;

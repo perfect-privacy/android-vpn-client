@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,9 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.LogContentProvider;
-import org.strongswan.android.logic.CharonVpnService;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.LogContentProvider;
+import org.perfectprivacy.android.logic.CharonVpnService;
 
 import java.io.File;
 

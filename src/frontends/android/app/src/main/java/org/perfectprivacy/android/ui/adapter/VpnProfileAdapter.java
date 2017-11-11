@@ -15,18 +15,17 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.adapter;
+package org.perfectprivacy.android.ui.adapter;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

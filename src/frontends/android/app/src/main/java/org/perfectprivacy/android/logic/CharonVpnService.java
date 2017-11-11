@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic;
+package org.perfectprivacy.android.logic;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -43,21 +43,21 @@ import android.support.v4.content.ContextCompat;
 import android.system.OsConstants;
 import android.util.Log;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfile.SelectedAppsHandling;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
-import org.strongswan.android.logic.VpnStateService.ErrorState;
-import org.strongswan.android.logic.VpnStateService.State;
-import org.strongswan.android.logic.imc.ImcState;
-import org.strongswan.android.logic.imc.RemediationInstruction;
-import org.strongswan.android.ui.MainActivity;
-import org.strongswan.android.ui.VpnProfileControlActivity;
-import org.strongswan.android.utils.Constants;
-import org.strongswan.android.utils.IPRange;
-import org.strongswan.android.utils.IPRangeSet;
-import org.strongswan.android.utils.SettingsWriter;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfile.SelectedAppsHandling;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
+import org.perfectprivacy.android.logic.VpnStateService.ErrorState;
+import org.perfectprivacy.android.logic.VpnStateService.State;
+import org.perfectprivacy.android.logic.imc.ImcState;
+import org.perfectprivacy.android.logic.imc.RemediationInstruction;
+import org.perfectprivacy.android.ui.MainActivity;
+import org.perfectprivacy.android.ui.VpnProfileControlActivity;
+import org.perfectprivacy.android.utils.Constants;
+import org.perfectprivacy.android.utils.IPRange;
+import org.perfectprivacy.android.utils.IPRangeSet;
+import org.perfectprivacy.android.utils.SettingsWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,8 +80,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 {
 	private static final String TAG = CharonVpnService.class.getSimpleName();
 	private static final String VPN_SERVICE_ACTION = "android.net.VpnService";
-	public static final String DISCONNECT_ACTION = "org.strongswan.android.CharonVpnService.DISCONNECT";
-	private static final String NOTIFICATION_CHANNEL = "org.strongswan.android.CharonVpnService.VPN_STATE_NOTIFICATION";
+	public static final String DISCONNECT_ACTION = "org.perfectprivacy.android.CharonVpnService.DISCONNECT";
+	private static final String NOTIFICATION_CHANNEL = "org.perfectprivacy.android.CharonVpnService.VPN_STATE_NOTIFICATION";
 	public static final String LOG_FILE = "charon.log";
 	public static final String KEY_IS_RETRY = "retry";
 	public static final int VPN_STATE_NOTIFICATION_ID = 1;

@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.security;
+package org.perfectprivacy.android.security;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-import org.strongswan.android.logic.StrongSwanApplication;
-import org.strongswan.android.utils.Utils;
+import org.perfectprivacy.android.logic.StrongSwanApplication;
+import org.perfectprivacy.android.utils.Utils;
 
 import android.content.Context;
 

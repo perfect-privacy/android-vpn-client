@@ -13,11 +13,11 @@
  * for more details.
  */
 
-package org.strongswan.android.test;
+package org.perfectprivacy.android.test;
 
 import org.junit.Test;
-import org.strongswan.android.utils.IPRange;
-import org.strongswan.android.utils.IPRangeSet;
+import org.perfectprivacy.android.utils.IPRange;
+import org.perfectprivacy.android.utils.IPRangeSet;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;

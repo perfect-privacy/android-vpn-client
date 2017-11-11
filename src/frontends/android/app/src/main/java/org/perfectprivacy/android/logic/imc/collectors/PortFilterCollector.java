@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.collectors;
+package org.perfectprivacy.android.logic.imc.collectors;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,8 +23,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.strongswan.android.logic.imc.attributes.Attribute;
-import org.strongswan.android.logic.imc.attributes.PortFilterAttribute;
+import org.perfectprivacy.android.logic.imc.attributes.Attribute;
+import org.perfectprivacy.android.logic.imc.attributes.PortFilterAttribute;
 
 public class PortFilterCollector implements Collector
 {

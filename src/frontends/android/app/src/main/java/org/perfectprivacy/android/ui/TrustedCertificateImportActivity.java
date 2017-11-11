@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -30,9 +30,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.widget.Toast;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.logic.TrustedCertificateManager;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.logic.TrustedCertificateManager;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

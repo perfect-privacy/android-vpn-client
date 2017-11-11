@@ -19,19 +19,19 @@
     android:orientation="vertical" >
 
     <fragment
-            class="org.strongswan.android.ui.VpnStateFragment"
+            class="org.perfectprivacy.android.ui.VpnStateFragment"
             android:id="@+id/vpn_state_frag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     <fragment
-            class="org.strongswan.android.ui.ImcStateFragment"
+            class="org.perfectprivacy.android.ui.ImcStateFragment"
             android:id="@+id/imc_state_frag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     <fragment
-            class="org.strongswan.android.ui.VpnProfileListFragment"
+            class="org.perfectprivacy.android.ui.VpnProfileListFragment"
             android:id="@+id/profile_list_frag"
             android:layout_width="match_parent"
             android:layout_height="0dp"

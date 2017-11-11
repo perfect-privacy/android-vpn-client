@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.adapter;
+package org.perfectprivacy.android.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -26,8 +26,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.ui.widget.CheckableLinearLayout;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.ui.widget.CheckableLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;

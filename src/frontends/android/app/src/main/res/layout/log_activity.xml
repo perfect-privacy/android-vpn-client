@@ -18,7 +18,7 @@
     android:layout_height="match_parent" >
 
     <fragment
-            class="org.strongswan.android.ui.LogFragment"
+            class="org.perfectprivacy.android.ui.LogFragment"
             android:id="@+id/log_frag"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

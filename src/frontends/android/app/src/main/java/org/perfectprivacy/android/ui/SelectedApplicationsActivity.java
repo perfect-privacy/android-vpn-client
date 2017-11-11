@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import org.strongswan.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
 
 public class SelectedApplicationsActivity extends AppCompatActivity
 {

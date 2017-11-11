@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
 import android.app.Service;
@@ -36,18 +36,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
-import org.strongswan.android.logic.VpnStateService;
-import org.strongswan.android.logic.VpnStateService.State;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
+import org.perfectprivacy.android.logic.VpnStateService;
+import org.perfectprivacy.android.logic.VpnStateService.State;
 
 public class VpnProfileControlActivity extends AppCompatActivity
 {
-	public static final String START_PROFILE = "org.strongswan.android.action.START_PROFILE";
-	public static final String DISCONNECT = "org.strongswan.android.action.DISCONNECT";
-	public static final String EXTRA_VPN_PROFILE_ID = "org.strongswan.android.VPN_PROFILE_ID";
+	public static final String START_PROFILE = "org.perfectprivacy.android.action.START_PROFILE";
+	public static final String DISCONNECT = "org.perfectprivacy.android.action.DISCONNECT";
+	public static final String EXTRA_VPN_PROFILE_ID = "org.perfectprivacy.android.VPN_PROFILE_ID";
 
 	private static final int PREPARE_VPN_SERVICE = 0;
 	private static final String WAITING_FOR_RESULT = "WAITING_FOR_RESULT";

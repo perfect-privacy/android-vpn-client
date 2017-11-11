@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -37,11 +37,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.logic.VpnStateService;
-import org.strongswan.android.logic.VpnStateService.VpnStateListener;
-import org.strongswan.android.logic.imc.ImcState;
-import org.strongswan.android.logic.imc.RemediationInstruction;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.logic.VpnStateService;
+import org.perfectprivacy.android.logic.VpnStateService.VpnStateListener;
+import org.perfectprivacy.android.logic.imc.ImcState;
+import org.perfectprivacy.android.logic.imc.RemediationInstruction;
 
 import java.util.ArrayList;
 

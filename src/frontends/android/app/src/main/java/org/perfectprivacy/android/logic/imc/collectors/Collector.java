@@ -13,9 +13,9 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.collectors;
+package org.perfectprivacy.android.logic.imc.collectors;
 
-import org.strongswan.android.logic.imc.attributes.Attribute;
+import org.perfectprivacy.android.logic.imc.attributes.Attribute;
 
 /**
  * Interface for measurement collectors

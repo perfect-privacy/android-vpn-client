@@ -15,11 +15,11 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.attributes;
+package org.perfectprivacy.android.logic.imc.attributes;
 
 import java.util.LinkedList;
 
-import org.strongswan.android.utils.BufferedByteWriter;
+import org.perfectprivacy.android.utils.BufferedByteWriter;
 
 import android.util.Pair;
 

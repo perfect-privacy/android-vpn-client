@@ -13,15 +13,15 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import org.strongswan.android.R;
-import org.strongswan.android.logic.imc.RemediationInstruction;
-import org.strongswan.android.ui.RemediationInstructionsFragment.OnRemediationInstructionSelectedListener;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.logic.imc.RemediationInstruction;
+import org.perfectprivacy.android.ui.RemediationInstructionsFragment.OnRemediationInstructionSelectedListener;
 
 import java.util.ArrayList;
 

@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,11 +30,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-import org.strongswan.android.R;
-import org.strongswan.android.logic.TrustedCertificateManager;
-import org.strongswan.android.logic.TrustedCertificateManager.TrustedCertificateSource;
-import org.strongswan.android.security.TrustedCertificateEntry;
-import org.strongswan.android.ui.adapter.TrustedCertificateAdapter;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.logic.TrustedCertificateManager;
+import org.perfectprivacy.android.logic.TrustedCertificateManager.TrustedCertificateSource;
+import org.perfectprivacy.android.security.TrustedCertificateEntry;
+import org.perfectprivacy.android.ui.adapter.TrustedCertificateAdapter;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;

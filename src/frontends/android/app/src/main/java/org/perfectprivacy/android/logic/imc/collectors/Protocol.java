@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.collectors;
+package org.perfectprivacy.android.logic.imc.collectors;
 
 public enum Protocol
 {

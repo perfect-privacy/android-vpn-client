@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -34,12 +34,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.logic.VpnStateService;
-import org.strongswan.android.logic.VpnStateService.ErrorState;
-import org.strongswan.android.logic.VpnStateService.State;
-import org.strongswan.android.logic.VpnStateService.VpnStateListener;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.logic.VpnStateService;
+import org.perfectprivacy.android.logic.VpnStateService.ErrorState;
+import org.perfectprivacy.android.logic.VpnStateService.State;
+import org.perfectprivacy.android.logic.VpnStateService.VpnStateListener;
 
 public class VpnStateFragment extends Fragment implements VpnStateListener
 {

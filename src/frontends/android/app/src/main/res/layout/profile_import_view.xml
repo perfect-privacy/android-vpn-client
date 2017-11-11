@@ -116,7 +116,7 @@
             android:orientation="vertical"
             android:layout_marginTop="6dp">
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/username_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,9 +129,9 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/password_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:singleLine="true"
                     android:inputType="textPassword|textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
         </LinearLayout>
 

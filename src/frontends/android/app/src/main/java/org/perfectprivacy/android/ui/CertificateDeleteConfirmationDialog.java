@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
-import org.strongswan.android.R;
+import org.perfectprivacy.android.R;
 
 /**
  * Class that displays a confirmation dialog to delete a selected local

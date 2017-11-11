@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,18 +30,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.logic.TrustedCertificateManager;
-import org.strongswan.android.logic.TrustedCertificateManager.TrustedCertificateSource;
-import org.strongswan.android.security.TrustedCertificateEntry;
-import org.strongswan.android.ui.CertificateDeleteConfirmationDialog.OnCertificateDeleteListener;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.logic.TrustedCertificateManager;
+import org.perfectprivacy.android.logic.TrustedCertificateManager.TrustedCertificateSource;
+import org.perfectprivacy.android.security.TrustedCertificateEntry;
+import org.perfectprivacy.android.ui.CertificateDeleteConfirmationDialog.OnCertificateDeleteListener;
 
 import java.security.KeyStore;
 
 public class TrustedCertificatesActivity extends AppCompatActivity implements TrustedCertificateListFragment.OnTrustedCertificateSelectedListener, OnCertificateDeleteListener
 {
-	public static final String SELECT_CERTIFICATE = "org.strongswan.android.action.SELECT_CERTIFICATE";
+	public static final String SELECT_CERTIFICATE = "com.perfectprivacy.android.action.SELECT_CERTIFICATE";
 	private static final String DIALOG_TAG = "Dialog";
 	private static final int IMPORT_CERTIFICATE = 0;
 	private TrustedCertificatesPagerAdapter mAdapter;

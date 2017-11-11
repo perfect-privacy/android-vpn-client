@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic;
+package org.perfectprivacy.android.logic;
 
 import android.support.annotation.Keep;
 

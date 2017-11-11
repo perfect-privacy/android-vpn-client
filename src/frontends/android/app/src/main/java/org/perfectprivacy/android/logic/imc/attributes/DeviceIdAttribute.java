@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.attributes;
+package org.perfectprivacy.android.logic.imc.attributes;
 
 /**
  * ITA Device ID attribute

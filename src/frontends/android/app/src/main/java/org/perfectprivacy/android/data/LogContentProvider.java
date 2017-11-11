@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.data;
+package org.perfectprivacy.android.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.strongswan.android.logic.CharonVpnService;
+import org.perfectprivacy.android.logic.CharonVpnService;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -34,7 +34,7 @@ import android.provider.OpenableColumns;
 
 public class LogContentProvider extends ContentProvider
 {
-	private static final String AUTHORITY = "org.strongswan.android.content.log";
+	private static final String AUTHORITY = "com.perfectprivacy.android.content.log";
 	/* an Uri is valid for 30 minutes */
 	private static final long URI_VALIDITY = 30 * 60 * 1000;
 	private static ConcurrentHashMap<Uri, Long> mUris = new ConcurrentHashMap<Uri, Long>();

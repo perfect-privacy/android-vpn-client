@@ -15,12 +15,12 @@
  * for more details.
  */
 
-package org.strongswan.android.logic.imc.collectors;
+package org.perfectprivacy.android.logic.imc.collectors;
 
 import java.util.Locale;
 
-import org.strongswan.android.logic.imc.attributes.Attribute;
-import org.strongswan.android.logic.imc.attributes.SettingsAttribute;
+import org.perfectprivacy.android.logic.imc.attributes.Attribute;
+import org.perfectprivacy.android.logic.imc.attributes.SettingsAttribute;
 
 import android.content.ContentResolver;
 import android.content.Context;

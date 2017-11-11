@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package org.strongswan.android.data;
+package org.perfectprivacy.android.data;
 
 import android.content.ContentValues;
 import android.content.Context;

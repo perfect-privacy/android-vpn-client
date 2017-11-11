@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.widget;
+package org.perfectprivacy.android.ui.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

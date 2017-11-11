@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui.widget;
+package org.perfectprivacy.android.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.strongswan.android.R;
+import org.perfectprivacy.android.R;
 
 /**
  * Layout that extends {@link android.support.design.widget.TextInputLayout} with a helper text

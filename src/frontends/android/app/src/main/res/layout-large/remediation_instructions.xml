@@ -20,7 +20,7 @@
     android:baselineAligned="false" >
 
     <fragment
-        class="org.strongswan.android.ui.RemediationInstructionsFragment"
+        class="org.perfectprivacy.android.ui.RemediationInstructionsFragment"
         android:id="@+id/remediation_instructions_fragment"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -34,7 +34,7 @@
         android:padding="5dp" >
 
         <fragment
-            class="org.strongswan.android.ui.RemediationInstructionFragment"
+            class="org.perfectprivacy.android.ui.RemediationInstructionFragment"
             android:id="@+id/remediation_instruction_fragment"
             android:layout_height="match_parent"
             android:layout_width="match_parent" />

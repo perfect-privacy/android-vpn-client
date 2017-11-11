@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.annotation.TargetApi;
 import android.app.Service;
@@ -29,12 +29,12 @@ import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType;
-import org.strongswan.android.logic.VpnStateService;
-import org.strongswan.android.utils.Constants;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType;
+import org.perfectprivacy.android.logic.VpnStateService;
+import org.perfectprivacy.android.utils.Constants;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class VpnTileService extends TileService implements VpnStateService.VpnStateListener

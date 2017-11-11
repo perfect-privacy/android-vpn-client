@@ -13,12 +13,12 @@
  * for more details.
  */
 
-package org.strongswan.android.logic;
+package org.perfectprivacy.android.logic;
 
 import java.security.Security;
 
-import org.strongswan.android.security.LocalCertificateKeyStoreProvider;
-import org.strongswan.android.ui.MainActivity;
+import org.perfectprivacy.android.security.LocalCertificateKeyStoreProvider;
+import org.perfectprivacy.android.ui.MainActivity;
 
 import android.app.Application;
 import android.content.Context;
@@ -49,7 +49,7 @@ public class StrongSwanApplication extends Application
 	}
 
 	/*
-	 * The libraries are extracted to /data/data/org.strongswan.android/...
+	 * The libraries are extracted to /data/data/org.perfectprivacy.android/...
 	 * during installation.  On newer releases most are loaded in JNI_OnLoad.
 	 */
 	static

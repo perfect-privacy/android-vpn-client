@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.ui;
+package org.perfectprivacy.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +22,9 @@ import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
+import org.perfectprivacy.android.R;
+import org.perfectprivacy.android.data.VpnProfile;
+import org.perfectprivacy.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
 
 public class VpnProfileSelectActivity extends AppCompatActivity implements OnVpnProfileSelectedListener
 {

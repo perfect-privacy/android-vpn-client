@@ -13,7 +13,7 @@
  * for more details.
  */
 
-package org.strongswan.android.utils;
+package org.perfectprivacy.android.utils;
 
 
 public class Utils

@@ -13,10 +13,10 @@
  * for more details.
  */
 
-package org.strongswan.android.test;
+package org.perfectprivacy.android.test;
 
 import org.junit.Test;
-import org.strongswan.android.utils.SettingsWriter;
+import org.perfectprivacy.android.utils.SettingsWriter;
 
 import static org.junit.Assert.assertEquals;
 

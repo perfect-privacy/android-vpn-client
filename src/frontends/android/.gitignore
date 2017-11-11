@@ -6,3 +6,5 @@ app/src/main/libs
 app/src/main/obj
 *.iml
 local.properties
+keystore.properties
+pp_keystore.jks

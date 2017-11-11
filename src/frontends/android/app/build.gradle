@@ -1,15 +1,29 @@
 apply plugin: 'com.android.application'
 
+// Load keystore properties
+def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 26
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "org.strongswan.android"
+        applicationId "com.perfectprivacy.android"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 62
         versionName "2.0.2"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
     }
 
     sourceSets.main {
@@ -36,6 +50,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }

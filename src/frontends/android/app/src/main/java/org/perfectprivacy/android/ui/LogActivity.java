@@ -21,10 +21,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.perfectprivacy.android.R;
-import org.perfectprivacy.android.data.LogContentProvider;
 import org.perfectprivacy.android.logic.CharonVpnService;
 
 import java.io.File;
@@ -73,11 +73,18 @@ public class LogActivity extends AppCompatActivity
 					e.printStackTrace();
 				}
 
+				TextView logView = ((TextView) this.findViewById(R.id.log_view));
+				if (logView == null) {
+					Toast.makeText(this, getString(R.string.empty_log), Toast.LENGTH_SHORT).show();
+					return true;
+				}
+
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[]{MainActivity.CONTACT_EMAIL});
 				intent.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.log_mail_subject), version));
+				//intent.putExtra(Intent.EXTRA_STREAM, LogContentProvider.createContentUri());
+				intent.putExtra(Intent.EXTRA_TEXT, logView.getText());
 				intent.setType("text/plain");
-				intent.putExtra(Intent.EXTRA_STREAM, LogContentProvider.createContentUri());
 				startActivity(Intent.createChooser(intent, getString(R.string.send_log)));
 				return true;
 		}

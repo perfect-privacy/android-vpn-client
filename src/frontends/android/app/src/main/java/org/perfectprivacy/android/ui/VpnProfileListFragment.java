@@ -44,6 +44,7 @@ import org.perfectprivacy.android.data.VpnProfileDataSource;
 import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
 import org.perfectprivacy.android.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;

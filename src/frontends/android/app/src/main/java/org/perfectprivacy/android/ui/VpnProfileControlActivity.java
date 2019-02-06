@@ -536,7 +536,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 	 */
 	public static class VpnNotSupportedError extends AppCompatDialogFragment
 	{
-		static final String ERROR_MESSAGE_ID = "org.strongswan.android.VpnNotSupportedError.MessageId";
+		static final String ERROR_MESSAGE_ID = "org.perfectprivacy.android.VpnNotSupportedError.MessageId";
 
 		public static void showWithMessage(AppCompatActivity activity, int messageId)
 		{

@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.strongswan.android.action.DISCONNECT" />
+                <action android:name="org.perfectprivacy.android.action.DISCONNECT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

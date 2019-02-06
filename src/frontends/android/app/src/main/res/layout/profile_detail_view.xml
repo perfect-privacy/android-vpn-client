@@ -450,7 +450,7 @@
                 android:textSize="12sp"
                 android:text="@string/profile_proposals_intro" />
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/ike_proposal_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -464,9 +464,9 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
-            <org.strongswan.android.ui.widget.TextInputLayoutHelper
+            <org.perfectprivacy.android.ui.widget.TextInputLayoutHelper
                 android:id="@+id/esp_proposal_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -480,7 +480,7 @@
                     android:singleLine="true"
                     android:inputType="textNoSuggestions" />
 
-            </org.strongswan.android.ui.widget.TextInputLayoutHelper>
+            </org.perfectprivacy.android.ui.widget.TextInputLayoutHelper>
 
             <TextView
                 android:id="@+id/profile_id_label"

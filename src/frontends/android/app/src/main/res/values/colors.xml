@@ -16,10 +16,13 @@
 <resources>
 
     <color
-        name="accent">#96BDC2</color>
+        name="accent">#6CEBBF</color>
 
     <color
-        name="primary">#304664</color>
+        name="negative_accent">#F45685</color>
+
+    <color
+        name="primary">#141414</color>
 
     <color
         name="primary_dark">#323232</color>
@@ -34,15 +37,18 @@
         name="success_text">#99CC00</color>
 
     <color
-        name="panel_background">#444444</color>
+        name="panel_background">#1E1E1E</color>
 
     <color
-        name="panel_separator">#5a5a5a</color>
+        name="panel_separator">#5A5A5A</color>
 
     <color
         name="checked">#4a4a4a</color>
 
     <color
         name="pressed">#5a5a5a</color>
+
+    <color
+        name="profile_list_background">#171717</color>
 
 </resources>

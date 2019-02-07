@@ -37,4 +37,8 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarSize">64dip</item>
+    </style>
+
 </resources>

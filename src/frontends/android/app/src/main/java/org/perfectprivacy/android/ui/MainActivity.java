@@ -25,6 +25,9 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.AsyncTask;
@@ -102,11 +105,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		setContentView(R.layout.main);
 
 		ActionBar bar = getSupportActionBar();
-		bar.setDisplayShowHomeEnabled(true);
-		//bar.setTitle("  " + getString(R.string.app_name));
-		bar.setTitle("  " + getString(R.string.main_activity_name));
-		bar.setDisplayShowTitleEnabled(true);
-		bar.setIcon(R.drawable.ic_launcher);
+		bar.setCustomView(R.layout.actionbar);
+		bar.setDisplayShowCustomEnabled(true);
 
 		/* load CA certificates in a background task */
 		new LoadCertificatesTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -345,8 +345,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 				@Override
 				public void onShow(DialogInterface dialog) {
 					// Get positive button and attach onclick listener
-					Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-					button.setOnClickListener(new View.OnClickListener() {
+					Button positive_btn = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+					positive_btn.setOnClickListener(new View.OnClickListener() {
 
 						@Override
 						public void onClick(View view) {
@@ -360,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 							if (!newuser.isEmpty() && (newuser.length() < 1 || newpass.length() < 1)) {
 								Toast.makeText(getActivity().getBaseContext(), R.string.invalid_user_or_password, Toast.LENGTH_LONG).show();
 								// Dialog stays open
-								return;
 							} else {
 								if (newuser.isEmpty()) { newuser = null; }
 								if (newpass.isEmpty()) { newpass = null; }
@@ -368,6 +367,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 								dataSource.setSettingPassword(newpass);
 								dataSource.updateAllProfilesUsernamePassword(newuser, newpass);
 								mainActivity.updateProfileList();
+
+								// FIXME: Assure that connection can be made when asked for credentials during connection attempt!
 
 								// Connect to desired profile if dialog was invoked during connection bootstrapping
 								if(profileInfo != null && profileInfo.getLong(VpnProfileDataSource.KEY_ID) != 0L) {
@@ -377,11 +378,13 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 								dataSource.close();
 								ad.dismiss();
-
-								return;
 							}
 						}
 					});
+
+					// Set color of negative button
+					Button negative_btn = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+					negative_btn.setTextColor(getResources().getColor(R.color.negative_accent));
 				}
 			});
 

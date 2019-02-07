@@ -395,6 +395,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 		} else {
 			//Print error-message to user
 			Toast.makeText(this, R.string.disconnect_before_refreshing, Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 
@@ -634,6 +635,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 				public void onDismiss(DialogInterface arg0) {
 					RefreshServerlistTask.this.cancel(true);
+					finish();
 				}
 			});
 		}
@@ -732,6 +734,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 				Log.e("JSONException", "Error: " + e.toString());
 			} finally {
 				this.progressDialog.dismiss();
+				finish();
 			}
 		}
 	}

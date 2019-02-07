@@ -294,7 +294,8 @@ public class VpnProfileControlActivity extends AppCompatActivity
 		if (profileInfo.getBoolean(PROFILE_REQUIRES_PASSWORD) &&
 			profileInfo.getString(VpnProfileDataSource.KEY_PASSWORD) == null)
 		{
-			LoginDialog login = new LoginDialog();
+			MainActivity.LoginDialog login = new MainActivity.LoginDialog();
+			profileInfo.putBoolean("finish_on_exit", true);
 			login.setArguments(profileInfo);
 			login.show(getSupportFragmentManager(), DIALOG_TAG);
 			return;

@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
                 return true;
 			case R.id.menu_set_login_credentials:
 				LoginDialog login = new LoginDialog();
-				login.setMainActivity(this);
 				login.show(getSupportFragmentManager(), DIALOG_TAG);
 				return true;
 			case R.id.menu_show_log:
@@ -297,16 +296,16 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	 */
 	public static class LoginDialog extends AppCompatDialogFragment {
 
-		private MainActivity mainActivity;
-
-		public void setMainActivity(MainActivity mainActivity) {
-			this.mainActivity = mainActivity;
-		}
+		/**
+		 * Whether to call finish() when destroying dialog
+		 */
+		boolean finish_on_exit = false;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Get attributes
 			final Bundle profileInfo = getArguments();
+			finish_on_exit = (profileInfo != null && profileInfo.getBoolean("finish_on_exit"));
 
 			// Get current login infos
 			VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
@@ -314,15 +313,15 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			View view = inflater.inflate(R.layout.login_dialog, null);
-			final EditText username = (EditText) view.findViewById(R.id.username);
+			final EditText username = view.findViewById(R.id.username);
 			username.setText(dataSource.getSettingUsername());
-			final EditText password = (EditText) view.findViewById(R.id.password);
+			final EditText password = view.findViewById(R.id.password);
 			password.setText(dataSource.getSettingPassword());
 
 			dataSource.close();
 
 			// Make register link clickable
-			TextView registerLink = (TextView) view.findViewById(R.id.register_now_link);
+			TextView registerLink = view.findViewById(R.id.register_now_link);
 			registerLink.setMovementMethod(LinkMovementMethod.getInstance());
 
 			// Build Dialog
@@ -330,65 +329,66 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			adb.setView(view);
 			adb.setTitle(getString(R.string.login_title));
 			adb.setCancelable(false);
-			adb.setPositiveButton(R.string.profile_edit_save, null); // Is set later directly on button
 
-			adb.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dismiss();
+			adb.setPositiveButton(R.string.profile_edit_save, (dialog, i) -> {
+				VpnProfileDataSource ds = new VpnProfileDataSource(getContext());
+				ds.open();
+
+				String newpass = password.getText().toString();
+				String newuser = username.getText().toString();
+
+				// Check validity of new password and username
+				if (!newuser.isEmpty() && (newuser.length() < 1 || newpass.length() < 1)) {
+					Toast.makeText(getActivity().getBaseContext(), R.string.invalid_user_or_password, Toast.LENGTH_LONG).show();
+					// Dialog stays open
+				} else {
+					if (newuser.isEmpty()) { newuser = null; }
+					if (newpass.isEmpty()) { newpass = null; }
+					ds.setSettingUsername(newuser);
+					ds.setSettingPassword(newpass);
+					ds.updateAllProfilesUsernamePassword(newuser, newpass);
+
+					// Update profile list
+					Intent intent = new Intent(Constants.VPN_PROFILES_CHANGED);
+					intent.putExtra(Constants.VPN_PROFILES_ALL, true);
+					LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+					// Connect to desired profile if dialog was invoked during connection bootstrapping
+					if (profileInfo != null && profileInfo.getString(VpnProfileDataSource.KEY_UUID) != null) {
+						this.finish_on_exit = false;
+
+						Intent start_intent = new Intent(getContext(), VpnProfileControlActivity.class);
+						start_intent.setAction(VpnProfileControlActivity.START_PROFILE);
+						start_intent.putExtra(VpnProfileControlActivity.EXTRA_VPN_PROFILE_ID, profileInfo.getString(VpnProfileDataSource.KEY_UUID));
+						startActivity(start_intent);
+					}
+
+					ds.close();
+					dialog.dismiss();
 				}
 			});
 
-			// Create AlertDialog and attach to button listener to allow custom dismissing of dialog
-			final AlertDialog ad = adb.create();
-			ad.setOnShowListener(new DialogInterface.OnShowListener() {
-				@Override
-				public void onShow(DialogInterface dialog) {
-					// Get positive button and attach onclick listener
-					Button positive_btn = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-					positive_btn.setOnClickListener(new View.OnClickListener() {
+			adb.setNegativeButton(R.string.profile_edit_cancel, (dialog, i) -> {
+				dialog.dismiss();
+			});
 
-						@Override
-						public void onClick(View view) {
-							VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
-							dataSource.open();
+			AlertDialog ad = adb.create();
 
-							String newpass = password.getText().toString();
-							String newuser = username.getText().toString();
-
-							// Check validity of new password and username
-							if (!newuser.isEmpty() && (newuser.length() < 1 || newpass.length() < 1)) {
-								Toast.makeText(getActivity().getBaseContext(), R.string.invalid_user_or_password, Toast.LENGTH_LONG).show();
-								// Dialog stays open
-							} else {
-								if (newuser.isEmpty()) { newuser = null; }
-								if (newpass.isEmpty()) { newpass = null; }
-								dataSource.setSettingUsername(newuser);
-								dataSource.setSettingPassword(newpass);
-								dataSource.updateAllProfilesUsernamePassword(newuser, newpass);
-								mainActivity.updateProfileList();
-
-								// FIXME: Assure that connection can be made when asked for credentials during connection attempt!
-
-								// Connect to desired profile if dialog was invoked during connection bootstrapping
-								if(profileInfo != null && profileInfo.getLong(VpnProfileDataSource.KEY_ID) != 0L) {
-									MainActivity activity = (MainActivity) getActivity();
-									activity.onVpnProfileSelected(dataSource.getVpnProfile(profileInfo.getLong(VpnProfileDataSource.KEY_ID)));
-								}
-
-								dataSource.close();
-								ad.dismiss();
-							}
-						}
-					});
-
-					// Set color of negative button
-					Button negative_btn = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
-					negative_btn.setTextColor(getResources().getColor(R.color.negative_accent));
-				}
+			// Set color of negative button
+			ad.setOnShowListener(dialog -> {
+				((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE)
+						.setTextColor(getResources().getColor(R.color.negative_accent));
 			});
 
 			return ad;
+		}
+
+		@Override
+		public void onDestroy() {
+			super.onDestroy();
+			if (this.finish_on_exit) {
+				getActivity().finish();
+			}
 		}
 	}
 

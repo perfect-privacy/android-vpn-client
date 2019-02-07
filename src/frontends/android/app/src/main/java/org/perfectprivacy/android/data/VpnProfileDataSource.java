@@ -543,7 +543,7 @@ public class VpnProfileDataSource
 	}
 
 	public void setSettingUsername(String new_username) {
-		if(new_username.isEmpty()) { new_username = null; }
+		if(new_username != null && new_username.isEmpty()) { new_username = null; }
 		ContentValues values = new ContentValues();
 		values.put(KEY_GLOBAL_USERNAME, new_username);
 		mDatabase.update(TABLE_SETTINGS, values, null, null);
@@ -557,7 +557,7 @@ public class VpnProfileDataSource
 	}
 
 	public void setSettingPassword(String new_password) {
-		if(new_password.isEmpty()) { new_password = null; }
+		if(new_password != null && new_password.isEmpty()) { new_password = null; }
 		ContentValues values = new ContentValues();
 		values.put(KEY_GLOBAL_PASSWORD, new_password);
 		mDatabase.update(TABLE_SETTINGS, values, null, null);

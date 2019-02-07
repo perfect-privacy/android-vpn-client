@@ -49,6 +49,6 @@
         name="pressed">#5a5a5a</color>
 
     <color
-        name="profile_list_background">#171717</color>
+        name="generic_background">#171717</color>
 
 </resources>

@@ -175,15 +175,10 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		}
 	}
 
-	// FIXME
 	public void refreshServerList() {
-		//Check if connection is currently active
-		if(mService == null || mService.getState() == State.DISABLED) {
-			new ProfileLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
-		} else {
-			//Print error-message to user
-			Toast.makeText(this, R.string.disconnect_before_refreshing, Toast.LENGTH_LONG).show();
-		}
+		Intent intent = new Intent(this, VpnProfileControlActivity.class);
+		intent.setAction(VpnProfileControlActivity.REFRESH_SERVERLIST);
+		startActivity(intent);
 	}
 
 	@Override
@@ -378,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 								// Connect to desired profile if dialog was invoked during connection bootstrapping
 								if(profileInfo != null && profileInfo.getLong(VpnProfileDataSource.KEY_ID) != 0L) {
 									MainActivity activity = (MainActivity) getActivity();
-									activity.startVpnProfile(dataSource.getVpnProfile(profileInfo.getLong(VpnProfileDataSource.KEY_ID)), true);
+									activity.onVpnProfileSelected(dataSource.getVpnProfile(profileInfo.getLong(VpnProfileDataSource.KEY_ID)));
 								}
 
 								dataSource.close();
@@ -432,123 +427,4 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 		}
 	}
 
-	/**
-	 * Class that loads or reloads the cached CA certificates.
-	 */
-	private class ProfileLoadTask extends AsyncTask<String, String, Void> {
-
-		private ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-
-		private String rawJSON = "";
-
-		@Override
-		protected void onPreExecute() {
-			//setProgressBarIndeterminateVisibility(true);
-			progressDialog.setMessage(getString(R.string.updating_serverlist));
-			progressDialog.show();
-			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-				public void onDismiss(DialogInterface arg0) {
-					ProfileLoadTask.this.cancel(true);
-				}
-			});
-		}
-
-		@Override
-		protected Void doInBackground(String... params) {
-
-			rawJSON = "";
-
-			try {
-				URL url = new URL("https://www.perfect-privacy.com/api/serverlocations.json");
-				HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-				urlConnection.setUseCaches(false);
-				urlConnection.setRequestMethod("GET");
-				urlConnection.setDoOutput(false);
-				urlConnection.setDoInput(true);
-				urlConnection.setConnectTimeout(10000);
-				urlConnection.setReadTimeout(10000);
-
-				try {
-					//Get JSON-Data
-					if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-						InputStream is = urlConnection.getInputStream();
-						rawJSON = new Scanner(is,"UTF-8").useDelimiter("\\A").next();
-						is.close();
-					}
-					urlConnection.disconnect();
-				} catch (SSLHandshakeException e) {
-					e.printStackTrace();
-				} catch (SocketTimeoutException e) {
-					Toast.makeText(MainActivity.this, "Connection timed out!", Toast.LENGTH_LONG).show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void v) {
-			// Parse JSON-API data
-			try {
-				// Create JSON Object of stringified JSON-response
-				JSONObject jObject = new JSONObject(rawJSON);
-				Iterator<String> keys = jObject.keys();
-				Set<String> processedServers = new HashSet<>();
-
-				// Check if servers were found
-				if (!jObject.keys().hasNext()) {
-					Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
-					Log.i("Serverlist refresh", "No servers found");
-					return;
-				}
-
-				// Parse each server and create profile
-				VpnProfileDataSource dataSource = new VpnProfileDataSource(MainActivity.this);
-				dataSource.open();
-				dataSource.deleteVpnProfiles();
-
-				String globalUsername = dataSource.getSettingUsername();
-				String globalPassword = dataSource.getSettingPassword();
-
-				while (keys.hasNext()) {
-					String curKey = keys.next();
-					String curServerAddress = curKey.replaceAll("\\d", "");
-					//Log.i("Json Key", "Server: " + curServerAddress);
-
-					// Since we are ignoring numbers only process every server once
-					if (!processedServers.contains(curServerAddress)) {
-						// Create profile for current server and insert into database
-						JSONObject serverData = jObject.getJSONObject(curKey);
-						processedServers.add(curServerAddress);
-
-						VpnProfile profile = new VpnProfile();
-						profile.setName(serverData.getString("city"));
-						profile.setGateway(curServerAddress);
-						profile.setVpnType(VpnType.IKEV2_EAP);
-						profile.setUsername(globalUsername);
-						profile.setPassword(globalPassword);
-						profile.setCountry(serverData.getString("country_short"));
-
-						dataSource.insertProfile(profile);
-					}
-
-				}
-
-				dataSource.close();
-				updateProfileList();
-
-			} catch (JSONException e) {
-				Toast.makeText(MainActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
-				Log.e("JSONException", "Error: " + e.toString());
-			} finally {
-				this.progressDialog.dismiss();
-			}
-		}
-
-	}
 }

@@ -16,6 +16,7 @@
 package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -23,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.VpnService;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
@@ -31,22 +33,38 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.perfectprivacy.android.R;
 import org.perfectprivacy.android.data.VpnProfile;
 import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnType;
 import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
 import org.perfectprivacy.android.logic.VpnStateService;
 import org.perfectprivacy.android.logic.VpnStateService.State;
+
+import java.io.InputStream;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.Set;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLHandshakeException;
 
 public class VpnProfileControlActivity extends AppCompatActivity
 {
 	public static final String START_PROFILE = "org.perfectprivacy.android.action.START_PROFILE";
 	public static final String DISCONNECT = "org.perfectprivacy.android.action.DISCONNECT";
+	public static final String REFRESH_SERVERLIST = "org.perfectprivacy.android.action.REFRESH_SERVERLIST";
 	public static final String EXTRA_VPN_PROFILE_ID = "org.perfectprivacy.android.VPN_PROFILE_ID";
 
 	private static final int PREPARE_VPN_SERVICE = 0;
@@ -359,6 +377,19 @@ public class VpnProfileControlActivity extends AppCompatActivity
 	}
 
 	/**
+	 * Refreshes the server list of VPN is disconnected.
+	 */
+	public void refreshServerList() {
+		//Check if connection is currently active
+		if (!isConnected()) {
+			new RefreshServerlistTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+		} else {
+			//Print error-message to user
+			Toast.makeText(this, R.string.disconnect_before_refreshing, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	/**
 	 * Handle the Intent of this Activity depending on its action
 	 */
 	private void handleIntent()
@@ -372,6 +403,10 @@ public class VpnProfileControlActivity extends AppCompatActivity
 		else if (DISCONNECT.equals(intent.getAction()))
 		{
 			disconnect(intent);
+		}
+		else if (REFRESH_SERVERLIST.equals(intent.getAction()))
+		{
+			refreshServerList();
 		}
 	}
 
@@ -570,6 +605,125 @@ public class VpnProfileControlActivity extends AppCompatActivity
 		public void onCancel(DialogInterface dialog)
 		{
 			getActivity().finish();
+		}
+	}
+
+	/**
+	 * Class that loads or reloads the cached serverlist.
+	 */
+	public class RefreshServerlistTask extends AsyncTask<String, String, Void> {
+
+		private ProgressDialog progressDialog = new ProgressDialog(VpnProfileControlActivity.this);
+
+		private String rawJSON = "";
+
+		@Override
+		protected void onPreExecute() {
+			//setProgressBarIndeterminateVisibility(true);
+			progressDialog.setMessage(getString(R.string.updating_serverlist));
+			progressDialog.show();
+			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				public void onDismiss(DialogInterface arg0) {
+					RefreshServerlistTask.this.cancel(true);
+				}
+			});
+		}
+
+		@Override
+		protected Void doInBackground(String... params) {
+
+			rawJSON = "";
+
+			try {
+				URL url = new URL("https://www.perfect-privacy.com/api/serverlocations.json");
+				HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+				urlConnection.setUseCaches(false);
+				urlConnection.setRequestMethod("GET");
+				urlConnection.setDoOutput(false);
+				urlConnection.setDoInput(true);
+				urlConnection.setConnectTimeout(10000);
+				urlConnection.setReadTimeout(10000);
+
+				try {
+					//Get JSON-Data
+					if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+						InputStream is = urlConnection.getInputStream();
+						rawJSON = new Scanner(is, "UTF-8").useDelimiter("\\A").next();
+						is.close();
+					}
+					urlConnection.disconnect();
+				} catch (SSLHandshakeException e) {
+					e.printStackTrace();
+				} catch (SocketTimeoutException e) {
+					Toast.makeText(VpnProfileControlActivity.this, "Connection timed out!", Toast.LENGTH_LONG).show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void v) {
+			// Parse JSON-API data
+			try {
+				// Create JSON Object of stringified JSON-response
+				JSONObject jObject = new JSONObject(rawJSON);
+				Iterator<String> keys = jObject.keys();
+				Set<String> processedServers = new HashSet<>();
+
+				// Check if servers were found
+				if (!jObject.keys().hasNext()) {
+					Toast.makeText(VpnProfileControlActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+					Log.i("Serverlist refresh", "No servers found");
+					return;
+				}
+
+				// Parse each server and create profile
+				VpnProfileDataSource dataSource = new VpnProfileDataSource(VpnProfileControlActivity.this);
+				dataSource.open();
+				dataSource.deleteVpnProfiles();
+
+				String globalUsername = dataSource.getSettingUsername();
+				String globalPassword = dataSource.getSettingPassword();
+
+				while (keys.hasNext()) {
+					String curKey = keys.next();
+					String curServerAddress = curKey.replaceAll("\\d", "");
+					//Log.i("Json Key", "Server: " + curServerAddress);
+
+					// Since we are ignoring numbers only process every server once
+					if (!processedServers.contains(curServerAddress)) {
+						// Create profile for current server and insert into database
+						JSONObject serverData = jObject.getJSONObject(curKey);
+						processedServers.add(curServerAddress);
+
+						VpnProfile profile = new VpnProfile();
+						profile.setName(serverData.getString("city"));
+						profile.setGateway(curServerAddress);
+						profile.setVpnType(VpnType.IKEV2_EAP);
+						profile.setUsername(globalUsername);
+						profile.setPassword(globalPassword);
+						profile.setCountry(serverData.getString("country_short"));
+
+						dataSource.insertProfile(profile);
+					}
+
+				}
+
+				dataSource.close();
+				//updateProfileList(); FIXME
+
+			} catch (JSONException e) {
+				Toast.makeText(VpnProfileControlActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
+				Log.e("JSONException", "Error: " + e.toString());
+			} finally {
+				this.progressDialog.dismiss();
+			}
 		}
 	}
 }

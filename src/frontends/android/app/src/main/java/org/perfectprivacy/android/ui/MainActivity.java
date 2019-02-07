@@ -18,18 +18,9 @@
 package org.perfectprivacy.android.ui;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.app.Service;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,44 +34,19 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.perfectprivacy.android.R;
 import org.perfectprivacy.android.data.VpnProfile;
 import org.perfectprivacy.android.data.VpnProfileDataSource;
-import org.perfectprivacy.android.data.VpnType;
-import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
-import org.perfectprivacy.android.logic.CharonVpnService;
 import org.perfectprivacy.android.logic.TrustedCertificateManager;
 import org.perfectprivacy.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
-import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
-import org.perfectprivacy.android.logic.VpnStateService.State;
 import org.perfectprivacy.android.utils.Constants;
-
-import java.io.InputStream;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.Set;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLHandshakeException;
 
 import java.io.File;
 import java.util.ArrayList;

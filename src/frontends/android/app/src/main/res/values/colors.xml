@@ -28,13 +28,13 @@
         name="primary_dark">#323232</color>
 
     <color
-        name="error_text">#D9192C</color>
+        name="error_text">#F45685</color>
 
     <color
         name="warning_text">#FF9909</color>
 
     <color
-        name="success_text">#99CC00</color>
+        name="success_text">#6CEBBF</color>
 
     <color
         name="panel_background">#1E1E1E</color>

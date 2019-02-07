@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,7 @@ import org.perfectprivacy.android.logic.TrustedCertificateManager;
 import org.perfectprivacy.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
 import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
 import org.perfectprivacy.android.logic.VpnStateService.State;
+import org.perfectprivacy.android.utils.Constants;
 
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
@@ -121,12 +123,9 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 	}
 
 	public void updateProfileList() {
-		VpnProfileDataSource dataSource = new VpnProfileDataSource(this);
-		dataSource.open();
-
-		ListView profileList = (ListView)findViewById(R.id.profile_list);
-		profileList.setAdapter(new VpnProfileAdapter(getApplicationContext(), R.layout.profile_list_item, dataSource.getAllVpnProfiles()));
-		dataSource.close();
+		Intent intent = new Intent(Constants.VPN_PROFILES_CHANGED);
+		intent.putExtra(Constants.VPN_PROFILES_ALL, true);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 
 	@Override

@@ -33,6 +33,11 @@ public final class Constants
 	public static final String VPN_PROFILES_MULTIPLE = "com.perfectprivacy.android.VPN_PROFILES_MULTIPLE";
 
 	/**
+	 * Used in the intent above to notify about changes to ALL vpn profiles
+	 */
+	public static final String VPN_PROFILES_ALL = "com.perfectprivacy.android.VPN_PROFILES_ALL";
+
+	/**
 	 * Limits for MTU
 	 */
 	public static final int MTU_MAX = 1500;

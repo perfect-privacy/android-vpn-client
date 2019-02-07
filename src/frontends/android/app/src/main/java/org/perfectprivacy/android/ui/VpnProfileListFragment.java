@@ -96,6 +96,12 @@ public class VpnProfileListFragment extends Fragment
 				}
 				mListAdapter.notifyDataSetChanged();
 			}
+			else if (intent.hasExtra(Constants.VPN_PROFILES_ALL))
+			{
+				mVpnProfiles.clear();
+				mVpnProfiles.addAll(mDataSource.getAllVpnProfiles());
+				mListAdapter.notifyDataSetChanged();
+			}
 		}
 	};
 

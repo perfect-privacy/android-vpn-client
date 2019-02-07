@@ -30,6 +30,7 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -37,6 +38,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -48,17 +50,24 @@ import org.perfectprivacy.android.data.VpnType;
 import org.perfectprivacy.android.data.VpnType.VpnTypeFeature;
 import org.perfectprivacy.android.logic.VpnStateService;
 import org.perfectprivacy.android.logic.VpnStateService.State;
+import org.perfectprivacy.android.ui.adapter.VpnProfileAdapter;
+import org.perfectprivacy.android.utils.Constants;
 
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
+
+import static java.util.stream.Collectors.toList;
 
 public class VpnProfileControlActivity extends AppCompatActivity
 {
@@ -716,7 +725,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 				}
 
 				dataSource.close();
-				//updateProfileList(); FIXME
+				updateProfileList();
 
 			} catch (JSONException e) {
 				Toast.makeText(VpnProfileControlActivity.this, getString(R.string.error_refreshing_serverlist), Toast.LENGTH_LONG).show();
@@ -725,5 +734,11 @@ public class VpnProfileControlActivity extends AppCompatActivity
 				this.progressDialog.dismiss();
 			}
 		}
+	}
+
+	public void updateProfileList() {
+		Intent intent = new Intent(Constants.VPN_PROFILES_CHANGED);
+		intent.putExtra(Constants.VPN_PROFILES_ALL, true);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 }

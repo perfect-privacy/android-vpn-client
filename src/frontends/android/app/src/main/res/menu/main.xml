@@ -28,11 +28,6 @@
         app:showAsAction="withText" />
 
     <item
-        android:id="@+id/menu_crl_cache"
-        android:title="@string/crl_cache"
-        app:showAsAction="withText" />
-
-    <item
         android:id="@+id/menu_show_log"
         android:title="@string/show_log"
         app:showAsAction="withText" />

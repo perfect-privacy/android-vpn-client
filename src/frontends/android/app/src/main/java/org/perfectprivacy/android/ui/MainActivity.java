@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			case R.id.menu_refresh_serverlist:
 				refreshServerList();
 				return true;
-			case R.id.menu_crl_cache:
+			/*case R.id.menu_crl_cache:
 				clearCRLs();
-                return true;
+                return true;*/
 			case R.id.menu_set_login_credentials:
 				LoginDialog login = new LoginDialog();
 				login.show(getSupportFragmentManager(), DIALOG_TAG);

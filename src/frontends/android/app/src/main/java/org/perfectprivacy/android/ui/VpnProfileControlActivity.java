@@ -23,10 +23,12 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -685,9 +687,20 @@ public class VpnProfileControlActivity extends AppCompatActivity
 					return;
 				}
 
-				// Parse each server and create profile
 				VpnProfileDataSource dataSource = new VpnProfileDataSource(VpnProfileControlActivity.this);
 				dataSource.open();
+
+				// Try to keep default vpn profile if explicitly set by user
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				String uuid = pref.getString(Constants.PREF_DEFAULT_VPN_PROFILE, null);
+				VpnProfile old_def_profil = null;
+				boolean def_profile_restore_success = true;  // Indicates whether or not a needed profile restore was successfull
+				if (uuid != null && !uuid.equals(Constants.PREF_DEFAULT_VPN_PROFILE_MRU)) {
+					old_def_profil = dataSource.getVpnProfile(uuid);
+					def_profile_restore_success = false;
+				}
+
+				// Parse each server and create profile
 				dataSource.deleteVpnProfiles();
 
 				String globalUsername = dataSource.getSettingUsername();
@@ -715,8 +728,27 @@ public class VpnProfileControlActivity extends AppCompatActivity
 						profile.setCountry(serverData.getString("country_short"));
 
 						dataSource.insertProfile(profile);
+
+						// Try to restore default profile
+						if (old_def_profil != null) {
+							if (old_def_profil.getGateway().equals(profile.getGateway()) &&
+								old_def_profil.getName().equals(profile.getName())) {
+
+								pref.edit()
+										.putString(Constants.PREF_DEFAULT_VPN_PROFILE, profile.getUUID().toString())
+										.apply();
+								def_profile_restore_success = true;
+							}
+						}
 					}
 
+				}
+
+				// Check if default VPN profile was restored correctly
+				if (!def_profile_restore_success) {
+					pref.edit()
+							.putString(Constants.PREF_DEFAULT_VPN_PROFILE, Constants.PREF_DEFAULT_VPN_PROFILE_MRU)
+							.apply();
 				}
 
 				dataSource.close();

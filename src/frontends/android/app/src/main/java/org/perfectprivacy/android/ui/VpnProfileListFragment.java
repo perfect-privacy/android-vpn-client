@@ -179,7 +179,10 @@ public class VpnProfileListFragment extends Fragment
 	public void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
-		outState.putIntegerArrayList(SELECTED_KEY, new ArrayList<>(mSelected));
+
+		if (!mReadOnly) {
+			outState.putIntegerArrayList(SELECTED_KEY, new ArrayList<>(mSelected));
+		}
 	}
 
 	@Override

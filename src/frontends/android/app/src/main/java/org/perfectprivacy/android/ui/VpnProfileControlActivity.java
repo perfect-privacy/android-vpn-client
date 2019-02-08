@@ -623,14 +623,11 @@ public class VpnProfileControlActivity extends AppCompatActivity
 
 		@Override
 		protected void onPreExecute() {
-			//setProgressBarIndeterminateVisibility(true);
 			progressDialog.setMessage(getString(R.string.updating_serverlist));
 			progressDialog.show();
-			progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-				public void onDismiss(DialogInterface arg0) {
-					RefreshServerlistTask.this.cancel(true);
-					finish();
-				}
+			progressDialog.setOnDismissListener(dialog -> {
+				RefreshServerlistTask.this.cancel(true);
+				finish();
 			});
 		}
 
@@ -711,6 +708,8 @@ public class VpnProfileControlActivity extends AppCompatActivity
 						profile.setName(serverData.getString("city"));
 						profile.setGateway(curServerAddress);
 						profile.setVpnType(VpnType.IKEV2_EAP);
+						profile.setIkeProposal("aes256gcm16-prfsha512-curve25519");
+						profile.setEspProposal("aes256gcm16-curve25519");
 						profile.setUsername(globalUsername);
 						profile.setPassword(globalPassword);
 						profile.setCountry(serverData.getString("country_short"));

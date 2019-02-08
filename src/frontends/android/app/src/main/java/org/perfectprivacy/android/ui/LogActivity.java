@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.perfectprivacy.android.R;
@@ -72,17 +74,26 @@ public class LogActivity extends AppCompatActivity
 					e.printStackTrace();
 				}
 
-				/*TextView logView = ((TextView) this.findViewById(R.id.log_view));
-				if (logView == null) {
+				// Don't send empty logs
+				ListView logView = this.findViewById(R.id.log);
+				if (logView == null || logView.getAdapter().isEmpty()) {
 					Toast.makeText(this, getString(R.string.empty_log), Toast.LENGTH_SHORT).show();
 					return true;
-				}*/
+				}
+
+				// Build log as sendable string
+				ListAdapter log_adapter = logView.getAdapter();
+				StringBuilder log_builder = new StringBuilder();
+				for (int i = 0; i < log_adapter.getCount(); i++) {
+					log_builder.append(log_adapter.getItem(i).toString());
+					log_builder.append("\n");
+				}
 
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[]{MainActivity.CONTACT_EMAIL});
 				intent.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.log_mail_subject), version));
 				//intent.putExtra(Intent.EXTRA_STREAM, LogContentProvider.createContentUri());
-				//intent.putExtra(Intent.EXTRA_TEXT, logView.getText()); FIXME
+				intent.putExtra(Intent.EXTRA_TEXT, log_builder.toString());
 				intent.setType("text/plain");
 				startActivity(Intent.createChooser(intent, getString(R.string.send_log)));
 				return true;

@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -251,7 +252,23 @@ public class VpnProfileDataSource
 						   " TEXT;");
 			}
 			if (oldVersion < 16)
-			{	/* add a UUID to all entries that haven't one yet */
+			{
+				// Fix custom db upgrade path (We raised the DB version to 15 so we need to apply strongswan changes for their version 15 :c)
+				Cursor c = db.rawQuery("SELECT * FROM " + TABLE_VPNPROFILE + " LIMIT 1;", null);
+				List col_names = Arrays.asList(c.getColumnNames());
+				c.close();
+
+				if (!col_names.contains(KEY_IKE_PROPOSAL)) {
+					db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_IKE_PROPOSAL +
+							" TEXT;");
+				}
+
+				if (!col_names.contains(KEY_ESP_PROPOSAL)) {
+					db.execSQL("ALTER TABLE " + TABLE_VPNPROFILE + " ADD " + KEY_ESP_PROPOSAL +
+							" TEXT;");
+				}
+
+				/* add a UUID to all entries that haven't one yet */
 				db.beginTransaction();
 				try
 				{

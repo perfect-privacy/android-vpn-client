@@ -64,7 +64,7 @@ public class VpnProfileAdapter extends ArrayAdapter<VpnProfile>
 		TextView tv = (TextView)vpnProfileView.findViewById(R.id.profile_item_name);
 		tv.setText(profile.getName());
 		tv = (TextView)vpnProfileView.findViewById(R.id.profile_item_gateway);
-		tv.setText(getContext().getString(R.string.profile_gateway_label) + ": " + profile.getGateway());
+		tv.setText(profile.getGateway());
 		//tv = (TextView)vpnProfileView.findViewById(R.id.profile_item_username);
 //		if (profile.getVpnType().has(VpnTypeFeature.USER_PASS))
 //		{	/* if the view is reused we make sure it is visible */

@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		getSupportFragmentManager().beginTransaction()
-							.replace(android.R.id.content, new SettingsFragment())
+							.replace(android.R.id.content, new SettingsWrapperFragment())
 							.commit();
 	}
 

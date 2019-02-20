@@ -37,6 +37,10 @@
     <string name="pref_title">Settings</string>
     <string name="pref_default_vpn_profile">Default VPN profile</string>
     <string name="pref_default_vpn_profile_mru">Connect to most recently used profile</string>
+    <string name="app_version">App version</string>
+    <string name="setup_always_on_vpn">Setup Always-On VPN</string>
+    <string name="always_on_vpn_not_supported">Unfortunately the Always-On VPN feature is not supported by this Android version.</string>
+    <string name="always_on_vpn_hint">Hint: You need to connect to a VPN at least once before you can configure the Always-On VPN feature.</string>
 
     <!-- Log view -->
     <string name="log_title">Log</string>

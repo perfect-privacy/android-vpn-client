@@ -13,7 +13,7 @@ android {
         applicationId "com.perfectprivacy.android"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 62
+        versionCode $System.env.BUILD_NUMBER
         versionName "2.0.2"
     }
 

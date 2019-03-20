@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
+
 // Load keystore properties
 def keystorePropertiesFile = rootProject.file("keystore.properties");
 def keystoreProperties = new Properties()
@@ -13,7 +15,7 @@ android {
         applicationId "com.perfectprivacy.android"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode System.getenv('BUILD_NUMBER')
+        versionCode appVersionCode
         versionName "2.0.2"
     }
 

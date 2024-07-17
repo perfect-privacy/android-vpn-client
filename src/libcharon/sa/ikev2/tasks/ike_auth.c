@@ -969,6 +969,40 @@ static bool apply_ppk(private_ike_auth_t *this)
 	return TRUE;
 }
 
+/**
+ * Determine a default IDr if the client didn't send one and none is configured.
+ */
+static identification_t *determine_default_idr(ike_sa_t *ike_sa,
+											   auth_cfg_t *cfg)
+{
+	identification_t *id = NULL;
+	certificate_t *cert;
+	host_t *me;
+
+	cert = cfg->get(cfg, AUTH_RULE_SUBJECT_CERT);
+	if (cert)
+	{
+		id = cert->get_subject(cert);
+		if (id && id->get_type(id) != ID_ANY && id->get_type(id) != ID_KEY_ID)
+		{
+			DBG1(DBG_CFG, "no IDr configured, default to cert subject '%Y'", id);
+			id = id->clone(id);
+		}
+		else
+		{
+			id = NULL;
+		}
+	}
+
+	if (!id)
+	{
+		DBG1(DBG_CFG, "no IDr configured, default to IP address");
+		me = ike_sa->get_my_host(ike_sa);
+		id = identification_create_from_sockaddr(me->get_sockaddr(me));
+	}
+	return id;
+}
+
 METHOD(task_t, build_r, status_t,
 	private_ike_auth_t *this, message_t *message)
 {
@@ -1010,13 +1044,10 @@ METHOD(task_t, build_r, status_t,
 		if (id->get_type(id) == ID_ANY)
 		{	/* no IDr received, apply configured ID */
 			if (!id_cfg || id_cfg->contains_wildcards(id_cfg))
-			{	/* no ID configured, use local IP address */
-				host_t *me;
-
-				DBG1(DBG_CFG, "no IDr configured, fall back on IP address");
-				me = this->ike_sa->get_my_host(this->ike_sa);
-				id_cfg = identification_create_from_sockaddr(
-														me->get_sockaddr(me));
+			{
+				/* no ID configured, fallback to either the subject DN or
+				 * the IP address */
+				id_cfg = determine_default_idr(this->ike_sa, cfg);
 				cfg->add(cfg, AUTH_RULE_IDENTITY, id_cfg);
 			}
 			this->ike_sa->set_my_id(this->ike_sa, id_cfg->clone(id_cfg));

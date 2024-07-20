@@ -3,7 +3,7 @@ Prepare Dependency
     brew install automake automake autoconf  libtool pkg-config m4 gmp bison jq openssl
 
 
-Build Strongswan
+Build Strongswan (bison hack because of old OSX bison verion)
 
     ./autogen.sh
     ./configure YACC='/opt/homebrew/opt/bison/bin/bison -y'  --host=arm-linux-androideabi  --disable-kernel-netlink --disable-scripts --disable-gmp

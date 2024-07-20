@@ -19,7 +19,9 @@ Prepare OpenSSL build
     export PATH=$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64/bin:$PATH
     export PATH=$basedir/Library/Android/sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/darwin-x86_64/bin/:$PATH
 
-Build OpenSSL https://github.com/android/ndk/issues/1992
+Build OpenSSL
+
+https://github.com/android/ndk/issues/1992
 
     nano  src/frontends/android/openssl/compile.sh -> add no-asm  to OPTIONS
     rm -r ./src/frontends/android/app/src/main/jni/openssl/
@@ -30,7 +32,10 @@ Build OpenSSL https://github.com/android/ndk/issues/1992
     src/frontends/android/openssl/build.sh
 
 
-Build signed Apk + Bundle, rename to perfect-privacy-version.aab and perfect-privacy-version.apk
+Build signed Apk + Bundle
+
+Rename to perfect-privacy-version.aab and perfect-privacy-version.apk
+
 Create new github release with tag android-pp-version, add files
 
 

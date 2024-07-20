@@ -20,9 +20,9 @@ strongswan_DIR := ../../../../../../../
 
 # includes
 strongswan_PATH := $(LOCAL_PATH)/$(strongswan_DIR)
-openssl_PATH := $(LOCAL_PATH)/openssl/include
+openssl_PATH := $(strongswan_PATH)/openssl/include
 
-include $(strongswan_PATH)/Android.common.mk
+include $(strongswan_PATH)/Android.common.mk.in
 
 # CFLAGS (partially from a configure run using droid-gcc)
 strongswan_CFLAGS := \

@@ -17,33 +17,39 @@
 <resources>
 
     <color
-        name="accent">#96BDC2</color>
+        name="accent">#6CEBBF</color>
 
     <color
-        name="primary">#A2042C</color>
+        name="negative_accent">#F45685</color>
+
+    <color
+        name="primary">#141414</color>
 
     <color
         name="primary_dark">#323232</color>
 
     <color
-        name="error_text">#D9192C</color>
+        name="error_text">#F45685</color>
 
     <color
         name="warning_text">#FF9909</color>
 
     <color
-        name="success_text">#99CC00</color>
+        name="success_text">#6CEBBF</color>
 
     <color
-        name="panel_background">#444444</color>
+        name="panel_background">#1E1E1E</color>
 
     <color
-        name="panel_separator">#5a5a5a</color>
+        name="panel_separator">#5A5A5A</color>
 
     <color
         name="checked">#4a4a4a</color>
 
     <color
         name="pressed">#5a5a5a</color>
+
+    <color
+        name="generic_background">#171717</color>
 
 </resources>

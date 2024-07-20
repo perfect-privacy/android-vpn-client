@@ -1,10 +1,17 @@
 apply plugin: 'com.android.application'
 
+def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
+
+// Load keystore properties
+//def keystorePropertiesFile = rootProject.file("keystore.properties");
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
-    namespace 'org.strongswan.android'
+    namespace 'org.perfectprivacy.android'
 
     defaultConfig {
-        applicationId "org.strongswan.android"
+        applicationId "com.perfectprivacy.android"
         compileSdk 34
         minSdkVersion 21
         targetSdkVersion 33
@@ -21,6 +28,20 @@ android {
 
     ndkVersion "26.1.10909125"
 
+    sourceSets.main {
+        jni.srcDirs = [] // disables the default ndk-build call (with on-the-fly Android.mk files)
+        jniLibs.srcDir 'src/main/libs'
+    }
+    /*
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }*/
+
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
@@ -31,13 +52,14 @@ android {
         compileTask ->
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
-
+    /*
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
-    }
+    }*/
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -45,11 +67,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-process:2.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.8.3'
     implementation 'androidx.preference:preference:1.2.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.12.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
-    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
 }

@@ -20,6 +20,7 @@ package org.strongswan.android.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+import org.perfectprivacy.android.utils.Difference;
 
 import java.util.List;
 import java.util.Objects;

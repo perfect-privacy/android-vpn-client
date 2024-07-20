@@ -22,6 +22,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:windowBackground">@color/generic_background</item>
     </style>
 
     <style name="AlertDialogTheme.Base" parent="Theme.AppCompat.Dialog.Alert">
@@ -36,6 +37,10 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarSize">64dip</item>
     </style>
 
 </resources>

@@ -780,7 +780,7 @@ JNI_METHOD(CharonVpnService, initiate, void,
 /**
  * Utility function to verify proposal strings (static, so `this` is the class)
  */
-JNI_METHOD_P(org_strongswan_android_utils, Utils, isProposalValid, jboolean,
+JNI_METHOD_P(org_perfectprivacy_android_utils, Utils, isProposalValid, jboolean,
 	jboolean ike, jstring proposal)
 {
 	proposal_t *prop;
@@ -804,7 +804,7 @@ JNI_METHOD_P(org_strongswan_android_utils, Utils, isProposalValid, jboolean,
 /**
  * Utility function to parse an IP address from a string (static, so `this` is the class)
  */
-JNI_METHOD_P(org_strongswan_android_utils, Utils, parseInetAddressBytes, jbyteArray,
+JNI_METHOD_P(org_perfectprivacy_android_utils, Utils, parseInetAddressBytes, jbyteArray,
 	jstring address)
 {
 	jbyteArray bytes;

@@ -14,22 +14,18 @@
     or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_import_profile"
-        android:title="@string/profile_import"
+        android:id="@+id/menu_refresh_serverlist"
+        android:title="@string/refresh_serverlist"
         app:showAsAction="withText" />
 
     <item
-        android:id="@+id/menu_manage_certs"
-        android:title="@string/trusted_certs_title"
-        app:showAsAction="withText" />
-
-    <item
-        android:id="@+id/menu_crl_cache"
-        android:title="@string/crl_cache"
+        android:id="@+id/menu_set_login_credentials"
+        android:title="@string/set_login_credentials"
         app:showAsAction="withText" />
 
     <item
@@ -40,6 +36,11 @@
     <item
         android:id="@+id/menu_settings"
         android:title="@string/pref_title"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/menu_get_help"
+        android:title="@string/get_help"
         app:showAsAction="withText" />
 
 </menu>

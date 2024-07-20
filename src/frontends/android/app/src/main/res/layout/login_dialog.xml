@@ -20,7 +20,9 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="1dp"
+    android:background="@color/primary"
+>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username_wrap"
@@ -31,9 +33,9 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:inputType="none"
-            android:hint="@string/login_username" />
+            android:hint="@string/login_username"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,10 +49,18 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:inputType="textPassword|textNoSuggestions"
-            android:hint="@string/login_password" />
+            android:hint="@string/login_password"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/register_now_link"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="@string/register_now" />
 
 </LinearLayout>

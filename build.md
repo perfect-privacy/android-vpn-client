@@ -30,7 +30,7 @@ Build OpenSSL https://github.com/android/ndk/issues/1992
     src/frontends/android/openssl/build.sh
 
 
-
-
+Build signed Apk + Bundle, rename to perfect-privacy-version.aab and perfect-privacy-version.apk
+Create new github release with tag android-pp-version, add files
 
 

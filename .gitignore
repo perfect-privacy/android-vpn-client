@@ -57,3 +57,4 @@ test-driver
 nbproject/
 openssl
 .idea
+src/frontends/android/app/release/

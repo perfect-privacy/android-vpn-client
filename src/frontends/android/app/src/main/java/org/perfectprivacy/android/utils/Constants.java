@@ -69,4 +69,9 @@ public final class Constants
 	 * Preference key to store whether the user permanently dismissed our warning to add the app to the power whitelist
 	 */
 	public static final String PREF_IGNORE_POWER_WHITELIST = "pref_ignore_power_whitelist";
+
+	public static final String PREF_SELECTED_APPS_HANDLING = "pref_selected_apps_handling";
+
+	public static final String PREF_SELECTED_APPS = "pref_selected_apps";
+
 }

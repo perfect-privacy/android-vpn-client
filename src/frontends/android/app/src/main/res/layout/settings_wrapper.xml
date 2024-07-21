@@ -15,13 +15,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="30px">
+
+        <TextView
+            android:id="@+id/apps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/profile_select_apps_label"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/apps_handling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/apps_handling"
+            android:spinnerMode="dropdown" />
+
+        <include
+            android:id="@+id/select_applications"
+            layout="@layout/two_line_button" />
 
         <Button
             android:id="@+id/setup_alway_on_vpn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:paddingTop="20px"
             android:background="@drawable/rounded_button"
             android:text="@string/setup_always_on_vpn" />
 

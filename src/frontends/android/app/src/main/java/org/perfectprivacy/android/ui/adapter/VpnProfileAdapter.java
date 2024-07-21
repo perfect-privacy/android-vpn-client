@@ -104,7 +104,7 @@ public class VpnProfileAdapter extends ArrayAdapter<VpnProfile>
 		}
 
 		// Set country flag
-		/*
+
 		String countryFlag = profile.getCountry();
 		ImageView countryFlagImage = (ImageView) vpnProfileView.findViewById(R.id.profile_item_country_flag);
 		countryFlagImage.setImageResource(R.drawable.flag_unknown); // Default to unknown (Don't remove. Android will have errors rendering... *shrugs*)
@@ -116,7 +116,7 @@ public class VpnProfileAdapter extends ArrayAdapter<VpnProfile>
 			if (countryFlagResourceId != 0) {
 				countryFlagImage.setImageResource(countryFlagResourceId);
 			}
-		}*/
+		}
 
         return vpnProfileView;
 	}

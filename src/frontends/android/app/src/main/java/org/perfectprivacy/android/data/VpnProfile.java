@@ -19,7 +19,12 @@
 package org.perfectprivacy.android.data;
 
 
+import android.content.SharedPreferences;
 import android.text.TextUtils;
+
+import androidx.preference.PreferenceManager;
+
+import org.perfectprivacy.android.utils.Constants;
 
 import java.util.Arrays;
 import java.util.Objects;

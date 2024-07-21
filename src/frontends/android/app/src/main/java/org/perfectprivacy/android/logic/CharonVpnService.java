@@ -39,6 +39,7 @@ import android.os.ParcelFileDescriptor;
 import android.security.KeyChain;
 import android.security.KeyChainException;
 import android.system.OsConstants;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.perfectprivacy.android.utils.Utils;
@@ -72,9 +73,11 @@ import java.security.PrivateKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -1121,8 +1124,27 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			mExcludedSubnets = IPRangeSet.fromString(profile.getExcludedSubnets());
 			Integer splitTunneling = profile.getSplitTunneling();
 			mSplitTunneling = splitTunneling != null ? splitTunneling : 0;
-			SelectedAppsHandling appHandling = profile.getSelectedAppsHandling();
-			mSelectedApps = profile.getSelectedAppsSet();
+
+			SelectedAppsHandling appHandling;
+			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(StrongSwanApplication.getContext());
+
+			int v = pref.getInt(Constants.PREF_SELECTED_APPS_HANDLING, 0);
+			if(v==VpnProfile.SelectedAppsHandling.SELECTED_APPS_EXCLUDE.ordinal()){
+				appHandling = VpnProfile.SelectedAppsHandling.SELECTED_APPS_EXCLUDE;
+			}else if(v==VpnProfile.SelectedAppsHandling.SELECTED_APPS_ONLY.ordinal()){
+				appHandling = VpnProfile.SelectedAppsHandling.SELECTED_APPS_ONLY;
+			}else{
+				appHandling = VpnProfile.SelectedAppsHandling.SELECTED_APPS_DISABLE;
+			}
+
+			TreeSet<String> set = new TreeSet<>();
+			if (!TextUtils.isEmpty(pref.getString(Constants.PREF_SELECTED_APPS,"")))
+			{
+				set.addAll(Arrays.asList(pref.getString(Constants.PREF_SELECTED_APPS,"").split("\\s+")));
+			}
+			mSelectedApps = set;
+
+
 			/* exclude our own app, otherwise the fetcher is blocked */
 			switch (appHandling)
 			{

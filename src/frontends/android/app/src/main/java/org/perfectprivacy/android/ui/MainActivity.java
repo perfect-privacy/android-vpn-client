@@ -296,11 +296,24 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			final EditText password = view.findViewById(R.id.password);
 			password.setText(dataSource.getSettingPassword());
 
-			dataSource.close();
 
 			// Make register link clickable
 			TextView registerLink = view.findViewById(R.id.register_now_link);
 			registerLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+			TextView manageLink = view.findViewById(R.id.manage_account_link);
+			manageLink.setMovementMethod(LinkMovementMethod.getInstance());
+			String un = dataSource.getSettingUsername();
+			String pw = dataSource.getSettingPassword();
+			if (un == null  || pw == null || un.isEmpty() || pw.isEmpty()){
+				registerLink.setVisibility(View.VISIBLE);
+				manageLink.setVisibility(View.GONE);
+			}else{
+				registerLink.setVisibility(View.GONE);
+				manageLink.setVisibility(View.VISIBLE);
+			}
+			dataSource.close();
+
 
 			// Build Dialog
 			AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());

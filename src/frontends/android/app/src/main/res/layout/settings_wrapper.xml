@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="30px">
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/apps"
@@ -28,7 +27,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:text="@string/profile_select_apps_label"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
 
         <Spinner
             android:id="@+id/apps_handling"
@@ -45,8 +44,11 @@
             android:id="@+id/setup_alway_on_vpn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:paddingTop="20px"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_button"
             android:text="@string/setup_always_on_vpn" />
 

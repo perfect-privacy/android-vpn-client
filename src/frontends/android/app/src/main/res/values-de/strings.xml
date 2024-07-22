@@ -248,7 +248,7 @@
     <string name="password_required_first">Logindaten setzen und erneut probieren!</string>
     <string name="disconnect_before_refreshing">Bitte trennen Sie die aktuelle Verbindung und versuchen Sie es erneut.</string>
 
-    <string name="register_now"><a href="https://perfect-privacy.com/de/order">Noch keinen Account? Auf perfect-privacy.com anmelden</a></string>
+    <string name="register_now"><a href="https://perfect-privacy.com/de/order">Noch keinen Account? Auf perfect-privacy.com anmelden!</a></string>
     <string name="manage_account"><a href="https://perfect-privacy.com/de/login">Account auf perfect-privacy.com verwalten</a></string>
     <string name="disclaimer">Zugangsdaten werden sicher auf ihrem Gerät gespeichert</string>
 

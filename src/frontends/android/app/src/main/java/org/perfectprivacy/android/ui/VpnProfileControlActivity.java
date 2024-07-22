@@ -59,6 +59,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -394,7 +395,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 	private void startVpnProfile(Bundle profileInfo)
 	{
 		if (profileInfo.getBoolean(PROFILE_REQUIRES_PASSWORD) &&
-			profileInfo.getString(VpnProfileDataSource.KEY_PASSWORD) == null)
+			(profileInfo.getString(VpnProfileDataSource.KEY_PASSWORD) == null || Objects.equals(profileInfo.getString(VpnProfileDataSource.KEY_PASSWORD), "")))
 		{
 			MainActivity.LoginDialog login = new MainActivity.LoginDialog();
 			profileInfo.putBoolean("finish_on_exit", true);
@@ -821,7 +822,7 @@ public class VpnProfileControlActivity extends AppCompatActivity
 					return;
 				}
 
-				VpnProfileDataSource dataSource = new VpnProfileDataSource(VpnProfileControlActivity.this);
+				VpnProfileSource dataSource = new VpnProfileSource(VpnProfileControlActivity.this);
 				dataSource.open();
 
 				// Try to keep default vpn profile if explicitly set by user
@@ -835,7 +836,9 @@ public class VpnProfileControlActivity extends AppCompatActivity
 				}
 
 				// Parse each server and create profile
-				dataSource.deleteVpnProfiles();
+				for (VpnProfile p : dataSource.getAllVpnProfiles()) {
+					dataSource.deleteVpnProfile(p);
+				}
 
 				String globalUsername = dataSource.getSettingUsername();
 				String globalPassword = dataSource.getSettingPassword();

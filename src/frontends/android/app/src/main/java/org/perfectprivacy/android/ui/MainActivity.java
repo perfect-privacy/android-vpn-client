@@ -55,6 +55,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import org.perfectprivacy.android.R;
 import org.perfectprivacy.android.data.VpnProfile;
 import org.perfectprivacy.android.data.VpnProfileDataSource;
+import org.perfectprivacy.android.data.VpnProfileSource;
+import org.perfectprivacy.android.logic.StrongSwanApplication;
 import org.perfectprivacy.android.logic.TrustedCertificateManager;
 import org.perfectprivacy.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
 import org.perfectprivacy.android.utils.Constants;
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 
 		//Check if Serverlist-Refresh is neccesarry (0 profiles present)
 		updateProfileList();
-		VpnProfileDataSource dataSource = new VpnProfileDataSource(this);
+		VpnProfileSource dataSource = new VpnProfileSource(this);
 		dataSource.open();
 		int numVPNProfiles = dataSource.getAllVpnProfiles().size();
 		dataSource.close();
@@ -286,9 +288,8 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			finish_on_exit = (profileInfo != null && profileInfo.getBoolean("finish_on_exit"));
 
 			// Get current login infos
-			VpnProfileDataSource dataSource = new VpnProfileDataSource(getContext());
+			VpnProfileSource dataSource = new VpnProfileSource(getContext());
 			dataSource.open();
-
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			View view = inflater.inflate(R.layout.login_dialog, null);
 			final EditText username = view.findViewById(R.id.username);
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements OnVpnProfileSelec
 			adb.setCancelable(false);
 
 			adb.setPositiveButton(R.string.profile_edit_save, (dialog, i) -> {
-				VpnProfileDataSource ds = new VpnProfileDataSource(getContext());
+				VpnProfileSource ds = new VpnProfileSource(getContext());
 				ds.open();
 
 				String newpass = password.getText().toString();

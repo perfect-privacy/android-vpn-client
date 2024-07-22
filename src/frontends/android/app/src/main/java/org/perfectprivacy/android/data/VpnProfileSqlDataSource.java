@@ -18,8 +18,10 @@
 
 package org.perfectprivacy.android.data;
 
+import static org.perfectprivacy.android.data.DatabaseHelper.TABLE_SETTINGS;
+import static org.perfectprivacy.android.data.DatabaseHelper.TABLE_VPN_PROFILE;
+
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VpnProfileSqlDataSource extends VpnProfileDataSource
+public class VpnProfileSqlDataSource implements VpnProfileDataSource
 {
 	private final DatabaseHelper mDbHelper;
 
@@ -40,9 +42,8 @@ public class VpnProfileSqlDataSource extends VpnProfileDataSource
 	 * Construct a new VPN profile data source. The context is used to
 	 * open/create the database.
 	 */
-	public VpnProfileSqlDataSource(final Context context)
+	public VpnProfileSqlDataSource()
 	{
-		super(context);
 		mDbHelper = StrongSwanApplication.getInstance().getDatabaseHelper();
 	}
 
@@ -153,6 +154,7 @@ public class VpnProfileSqlDataSource extends VpnProfileDataSource
 		profile.setIkeProposal(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IKE_PROPOSAL)));
 		profile.setEspProposal(cursor.getString(cursor.getColumnIndexOrThrow(KEY_ESP_PROPOSAL)));
 		profile.setDnsServers(cursor.getString(cursor.getColumnIndexOrThrow(KEY_DNS_SERVERS)));
+		profile.setCountry(cursor.getString(cursor.getColumnIndexOrThrow(KEY_COUNTRY)));
 		return profile;
 	}
 
@@ -181,6 +183,7 @@ public class VpnProfileSqlDataSource extends VpnProfileDataSource
 		values.put(KEY_IKE_PROPOSAL, profile.getIkeProposal());
 		values.put(KEY_ESP_PROPOSAL, profile.getEspProposal());
 		values.put(KEY_DNS_SERVERS, profile.getDnsServers());
+		values.put(KEY_COUNTRY, profile.getCountry());
 		return values;
 	}
 
@@ -188,4 +191,46 @@ public class VpnProfileSqlDataSource extends VpnProfileDataSource
 	{
 		return cursor.isNull(columnIndex) ? null : cursor.getInt(columnIndex);
 	}
+
+	public String getSettingUsername() {
+		Cursor cursor = mDatabase.query(TABLE_SETTINGS.Name, TABLE_SETTINGS.columnNames(), null, null, null, null, null);
+		String username = null;
+		if (cursor.moveToFirst()){
+			username = cursor.getString(cursor.getColumnIndexOrThrow(KEY_GLOBAL_USERNAME));
+		}
+		cursor.close();
+		return username;
+	}
+
+	public void setSettingUsername(String new_username) {
+		if(new_username != null && new_username.isEmpty()) { new_username = null; }
+		ContentValues values = new ContentValues();
+		values.put(KEY_GLOBAL_USERNAME, new_username);
+		mDatabase.update(TABLE_SETTINGS.Name, values, null, null);
+	}
+
+	public String getSettingPassword() {
+		Cursor cursor = mDatabase.query(TABLE_SETTINGS.Name, TABLE_SETTINGS.columnNames(), null, null, null, null, null);
+		String password = null;
+		if (cursor.moveToFirst()) {
+			password = cursor.getString(cursor.getColumnIndexOrThrow(KEY_GLOBAL_PASSWORD));
+		}
+		cursor.close();
+		return password;
+	}
+
+	public void setSettingPassword(String new_password) {
+		if(new_password != null && new_password.isEmpty()) { new_password = null; }
+		ContentValues values = new ContentValues();
+		values.put(KEY_GLOBAL_PASSWORD, new_password);
+		mDatabase.update(TABLE_SETTINGS.Name, values, null, null);
+	}
+
+	public void updateAllProfilesUsernamePassword(String new_username, String new_password) {
+		ContentValues values = new ContentValues();
+		values.put(KEY_USERNAME, new_username);
+		values.put(KEY_PASSWORD, new_password);
+		mDatabase.update(TABLE_VPN_PROFILE.Name, values, null, null);
+	}
+
 }

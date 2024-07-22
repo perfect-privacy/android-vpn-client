@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class VpnProfileManagedDataSource extends VpnProfileDataSource
+public class VpnProfileManagedDataSource implements VpnProfileDataSource
 {
 	private static final String NAME_MANAGED_VPN_PROFILES = "org.perfectprivacy.android.data.VpnProfileManagedDataSource.preferences";
 
@@ -38,7 +38,6 @@ public class VpnProfileManagedDataSource extends VpnProfileDataSource
 
 	public VpnProfileManagedDataSource(final Context context)
 	{
-		super(context);
 		this.mManagedConfigurationService = StrongSwanApplication.getInstance().getManagedConfigurationService();
 		this.mSharedPreferences = context.getSharedPreferences(NAME_MANAGED_VPN_PROFILES, Context.MODE_PRIVATE);
 	}

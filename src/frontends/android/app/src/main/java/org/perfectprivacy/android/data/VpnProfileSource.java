@@ -16,7 +16,12 @@
 
 package org.perfectprivacy.android.data;
 
+import static org.perfectprivacy.android.data.DatabaseHelper.TABLE_SETTINGS;
+import static org.perfectprivacy.android.data.DatabaseHelper.TABLE_VPN_PROFILE;
+
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 
 import org.perfectprivacy.android.logic.StrongSwanApplication;
@@ -25,20 +30,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VpnProfileSource extends VpnProfileDataSource {
+public class VpnProfileSource implements VpnProfileDataSource
+{
 	private final ManagedConfigurationService mManagedConfigurationService;
 	private final List<VpnProfileDataSource> dataSources = new ArrayList<>();
 	private final VpnProfileSqlDataSource vpnProfileSqlDataSource;
 
 	public VpnProfileSource(Context context)
 	{
-		super(context);
 		mManagedConfigurationService = StrongSwanApplication.getInstance().getManagedConfigurationService();
 
-		vpnProfileSqlDataSource = new VpnProfileSqlDataSource(context);
+		vpnProfileSqlDataSource = new VpnProfileSqlDataSource();
 
 		dataSources.add(vpnProfileSqlDataSource);
-		dataSources.add(new VpnProfileDataSource(context));
+		dataSources.add(new VpnProfileManagedDataSource(context));
 	}
 
 	@Override
@@ -115,4 +120,27 @@ public class VpnProfileSource extends VpnProfileDataSource {
 
 		return profiles;
 	}
+
+
+
+	public String getSettingUsername() {
+		return this.vpnProfileSqlDataSource.getSettingUsername();
+	}
+
+	public void setSettingUsername(String new_username) {
+		this.vpnProfileSqlDataSource.setSettingUsername(new_username);
+	}
+
+	public String getSettingPassword() {
+		return this.vpnProfileSqlDataSource.getSettingPassword();
+	}
+
+	public void setSettingPassword(String new_password) {
+		this.vpnProfileSqlDataSource.setSettingPassword(new_password);
+	}
+
+	public void updateAllProfilesUsernamePassword(String new_username, String new_password) {
+		this.vpnProfileSqlDataSource.updateAllProfilesUsernamePassword(new_username,new_password);
+	}
+
 }

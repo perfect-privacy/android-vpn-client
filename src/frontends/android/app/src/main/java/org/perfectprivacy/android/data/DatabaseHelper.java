@@ -37,9 +37,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 {
 	private static final String TAG = DatabaseHelper.class.getSimpleName();
 
-	private static final String DATABASE_NAME = "strongswan.db";
+	private static final String DATABASE_NAME = "perfectprivacy.db";
 
 	private static final String TABLE_NAME_VPN_PROFILE = "vpnprofile";
+	private static final String TABLE_NAME_SETTINGS = "settings";
 	private static final String TABLE_NAME_TRUSTED_CERTIFICATE = "trustedcertificate";
 	private static final String TABLE_NAME_USER_CERTIFICATE = "usercertificate";
 
@@ -66,7 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		new DbColumn(VpnProfileDataSource.KEY_FLAGS, "INTEGER", 14),
 		new DbColumn(VpnProfileDataSource.KEY_IKE_PROPOSAL, "TEXT", 15),
 		new DbColumn(VpnProfileDataSource.KEY_ESP_PROPOSAL, "TEXT", 15),
+		new DbColumn(VpnProfileDataSource.KEY_COUNTRY, "TEXT", 15),
 		new DbColumn(VpnProfileDataSource.KEY_DNS_SERVERS, "TEXT", 17),
+	});
+
+	static final DbTable TABLE_SETTINGS = new DbTable(TABLE_NAME_SETTINGS, 1, new DbColumn[]{
+		new DbColumn(VpnProfileDataSource.KEY_ID, "INTEGER PRIMARY KEY AUTOINCREMENT", 1),
+		new DbColumn(VpnProfileDataSource.KEY_GLOBAL_USERNAME, "TEXT", 15),
+		new DbColumn(VpnProfileDataSource.KEY_GLOBAL_PASSWORD, "TEXT", 15),
 	});
 
 	public static final DbTable TABLE_TRUSTED_CERTIFICATE = new DbTable(TABLE_NAME_TRUSTED_CERTIFICATE, 18, new DbColumn[]{
@@ -84,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		new DbColumn(ManagedUserCertificate.KEY_PASSWORD, "TEXT", 18),
 	});
 
-	private static final int DATABASE_VERSION = 18;
+	public static final int DATABASE_VERSION = 18;
 
 	private static final Set<DbTable> TABLES;
 
@@ -94,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		TABLES.add(TABLE_VPN_PROFILE);
 		TABLES.add(TABLE_TRUSTED_CERTIFICATE);
 		TABLES.add(TABLE_USER_CERTIFICATE);
+		TABLES.add(TABLE_SETTINGS);
 	}
 
 	public DatabaseHelper(Context context)
@@ -105,6 +114,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	public void onCreate(SQLiteDatabase database)
 	{
 		addNewTables(database, 0);
+
+		ContentValues values = new ContentValues();
+		values.put(VpnProfileDataSource.KEY_GLOBAL_USERNAME, "");
+		values.put(VpnProfileDataSource.KEY_GLOBAL_PASSWORD, "");
+		database.insert(TABLE_SETTINGS.Name,null , values);
 	}
 
 	@Override
